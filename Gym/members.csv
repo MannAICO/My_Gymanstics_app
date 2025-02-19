@@ -1,0 +1,49 @@
+member_id,name,age,membership_type,date_of_joining
+6,Mann,87,VIP,2025-02-07
+6,Mann,87,VIP,2025-02-07
+6,Manisha chauhan ,46,VIP,2025-02-14
+1,Mann,21,Premium,2025-02-16
+2,Mann makwana ,98,Premium,2025-02-22
+6,Mann makwana ,19,Basic,2025-02-13
+6,Mann makwana ,88,Premium,2025-02-14
+6,Mann makwana ,89,Premium,2025-02-06,3-months,49.99
+6,Mann makwana ,19,Premium,2025-02-07,3-months,49.99
+6,Manisha chauhan ,88,Platinum,2025-02-19,6-months,69.99
+6,AUD,18,Gold,2025-02-23,3-months,29.99
+6,AUD,18,Gold,2025-02-23,3-months,29.99
+6,Jay chauhan  ,25,Gold,2025-02-14,6-months,49.99
+6,AUD,34,Premium,2025-02-22,3-months,49.99
+6,ttttt,77,Basic,2025-02-17,1-month,19.99
+6,Mann makwana ,77,Gold,2025-02-18,3-months,29.99
+6,egteth,77,Gold,2025-02-20,6-months,49.99
+6,Jay chauhan  ,77,Gold,2025-02-07,3-months,29.99
+6,Mann,77,Premium,2025-02-14,3-months,49.99
+6,Mann makwana ,78,Basic,2025-02-25,1-month,19.99
+6,Mann makwana ,78,Basic,2025-02-25,1-month,19.99
+6,Mann,78,Basic,2025-02-19,1-month,19.99
+6,Jay chauhan  ,78,Premium,2025-02-26,1-month,29.99
+6,AUD,78,Premium,2025-02-24,3-months,49.99
+6,Mann makwana ,19,Gold,2025-02-15,1-year,89.99
+6,Mann,19,VIP,2025-02-03,1-year,189.99
+6,Mann,19,VIP,2025-02-07,1-year,189.99
+6,Mann makwana ,88,Platinum,2025-02-09,6-months,69.99
+6,Mann makwana ,19,Premium,2025-02-07,3-months,49.99
+6,AUD,99,Premium,2025-02-09,1-year,139.99
+6,Mann,19,Gold,2025-02-07,6-months,49.99
+6,Mann,99,Basic,2025-02-09,1-month,19.99
+6,dferg,88,Premium,2025-02-22,3-months,49.99
+7,Mann makwana ,77,Gold,2025-02-16,3-months,29.99
+8,Mann makwana ,19,VIP,2025-02-23,1-month,19.99
+9,AUD,19,VIP,2025-02-16,1-year,189.99
+10,Mann makwana ,99,VIP,2025-02-09,6-months,99.99
+6,Jay chauhan  ,21,VIP,2025-02-15,1-month,19.99
+7,Mann makwana ,19,VIP,2025-02-10,1-year,189.99
+8,nazneen ,20,Gold,2025-02-09,6-months,49.99
+9,nazneen ,20,Gold,2025-02-09,6-months,49.99
+10,nazneen ,20,Premium,2025-02-09,3-months,49.99
+11,nazneen ,20,Premium,2025-02-09,3-months,49.99
+12,Mann makwana ,20,Premium,2025-02-22,3-months,49.99
+13,AUD,20,Premium,2025-02-08,3-months,49.99
+14,nazneen ,20,Platinum,2025-02-12,6-months,69.99
+14,Mann makwana ,88,Basic,2025-02-18,1-month,1500
+15,Mann makwana ,22,VIP,2025-02-28,1-year,80000

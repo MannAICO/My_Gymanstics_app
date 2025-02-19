@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FF3366;
+      --secondary: #6C72CB;
+      --accent: #45E3FF;
+      --dark: #1A1B1F;
+      --light: #FFFFFF;
+      --background: #F4F7FE;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--background);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 51, 102, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(108, 114, 203, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(69, 227, 255, 0.1) 0%, transparent 30%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      perspective: 1000px;
+    }
+
+    .card {
+      background: var(--light);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+      transform-style: preserve-3d;
+      transform: rotateX(2deg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    }
+
+    .header {
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin: 0;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+
+    .floating-icon {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 8rem;
+      color: rgba(108, 114, 203, 0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50% { transform: translateY(-50%) translateX(10px); }
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+      color: var(--dark);
+      font-size: 0.95rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .input-wrapper:focus-within {
+      transform: scale(1.02);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 2px solid #E1E5EE;
+      border-radius: 16px;
+      background: transparent;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 4px rgba(108, 114, 203, 0.1);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper:focus-within .input-icon {
+      color: var(--secondary);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .button-container {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      position: relative;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 99px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 180px;
+      justify-content: center;
+    }
+
+    .btn i {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 20px rgba(255, 51, 102, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: white;
+      box-shadow: 0 4px 20px rgba(108, 114, 203, 0.3);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: var(--dark);
+      box-shadow: 0 4px 20px rgba(69, 227, 255, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--secondary);
+      color: var(--secondary);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn:hover i {
+      transform: translateX(3px);
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+    }
+
+    .btn:hover::after {
+      transform: translateX(100%);
+      transition: 0.5s;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 2rem;
+        transform: none;
+      }
+
+      .button-container {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .floating-icon {
+        display: none;
+      }
+    }
+
+    .status-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #E1E5EE;
+      overflow: hidden;
+    }
+
+    .status-progress {
+      width: 25%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="title-group">
+          <h1>Create Invoice</h1>
+        </div>
+        <i class="fas fa-file-invoice-dollar floating-icon"></i>
+      </div>
+
+      <form method="POST">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="member_id">Member ID</label>
+            <div class="input-wrapper">
+              <input type="text" class="form-control" id="member_id" name="member_id" required>
+              <i class="input-icon fas fa-fingerprint"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="amount">Amount</label>
+            <div class="input-wrapper">
+              <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+              <i class="input-icon fas fa-rupee-sign"></i>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="description">Description</label>
+            <div class="input-wrapper">
+              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+              <i class="input-icon fas fa-align-left"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="due_date">Due Date</label>
+            <div class="input-wrapper">
+              <input type="date" class="form-control" id="due_date" name="due_date">
+              <i class="input-icon fas fa-calendar"></i>
+            </div>
+          </div>
+
+          <!-- New Payment Method Field -->
+          <div class="form-group">
+            <label for="payment_method">Payment Method</label>
+            <div class="input-wrapper">
+              <select class="form-control" id="payment_method" name="payment_method" required>
+                <option value="card">Credit/Debit Card</option>
+                <option value="cash">Cash</option>
+                <option value="check">Check</option>
+                <option value="UPI Payment">UPI Payment</option>
+                <option value="netbanking">Netbanking</option>
+                <option value="wallet">Wallet</option>
+                <option value="other">Other</option>
+              </select>
+              <i class="input-icon fas fa-credit-card"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="receiver_email">Email</label>
+            <div class="input-wrapper">
+              <input type="email" class="form-control" id="receiver_email" name="receiver_email" required>
+              <i class="input-icon fas fa-at"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <a href="{{ url_for('home') }}" class="btn back-button">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back</span>
+          </a>
+        
+          <style>
+            .back-button {
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              font-size: 22px;
+              font-weight: bold;
+              padding: 12px 20px;
+              border-radius: 30px;
+              text-decoration: none;
+              background: linear-gradient(135deg, #6a11cb, #2575fc);
+              color: white;
+              transition: 0.3s ease;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+            .back-button i {
+              font-size: 26px;
+            }
+            .back-button:hover {
+              transform: scale(1.1);
+              background: linear-gradient(135deg, #2575fc, #6a11cb);
+              box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            }
+          </style>
+        
+          <a href="{{ url_for('view_invoices') }}" class="btn btn-accent">
+            <i class="fas fa-history"></i>
+            History
+          </a>
+          <a href="{{ url_for('past_invoices') }}" class="btn btn-secondary">
+            <i class="fas fa-chart-bar"></i>
+            Check Invoices
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i>
+            Generate
+          </button>
+        </div>
+      </form>
+
+      <div class="status-bar">
+        <div class="status-progress"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

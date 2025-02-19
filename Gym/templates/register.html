@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join Our Community</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #6c63ff;
+      --secondary: #f50057;
+      --bg-light: #fcfcfc;
+      --text-dark: #333;
+      --card-shadow: rgba(244, 202, 18, 0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px var(--card-shadow);
+      overflow: hidden;
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+    }
+    
+    .form-header {
+      background-color: var(--primary);
+      color: white;
+      padding: 45px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .form-header h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .form-header p {
+      opacity: 0.9;
+      font-size: 16px;
+    }
+    
+    .color-theme-selector {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 8px;
+    }
+    
+    .color-option {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    
+    .color-option:hover {
+      transform: scale(1.2);
+    }
+    
+    .color-option.selected {
+      border: 2px solid white;
+    }
+    
+    .color-purple { background-color: #6c63ff; }
+    .color-pink { background-color: #f50057; }
+    .color-teal { background-color: #00bfa5; }
+    .color-orange { background-color: #eaa206; }
+    
+    .form-body {
+      padding: 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    
+    .input-wrapper {
+      position: relative;
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 12px 12px 12px 35px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .error-message {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+    
+    /* Membership Options */
+    .membership-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    
+    .membership-option {
+      flex: 1 0 calc(20% - 15px);
+      min-width: 120px;
+      background-color: #f5f5f5;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .membership-option:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px var(--card-shadow);
+    }
+    
+    .membership-option.selected {
+      border-color: var(--primary);
+      background-color: rgba(108, 99, 255, 0.05);
+    }
+    
+    /* Enhanced Plan Description Card */
+    .plan-description {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: var(--bg-light);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px var(--card-shadow);
+      transition: all 0.3s;
+    }
+    
+    .plan-description h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .plan-description h3 i {
+      margin-right: 10px;
+      font-size: 26px;
+    }
+    
+    .plan-description p {
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    
+    .plan-description ul {
+      margin-left: 20px;
+      list-style-type: disc;
+    }
+    
+    .plan-description ul li {
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    
+    /* Pricing Options */
+    .pricing-options {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .pricing-option {
+      flex: 1;
+      background-color: #f9f9f9;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .pricing-option:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .pricing-option.selected {
+      border-color: var(--primary);
+      background-color: rgba(108, 99, 255, 0.05);
+    }
+    
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 12px 30px;
+      margin-top: 30px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-submit:hover {
+      background-color: var(--secondary);
+    }
+    
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .membership-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .membership-option {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-header">
+      <div class="color-theme-selector">
+        <div class="color-option color-purple selected" data-color="#6c63ff"></div>
+        <div class="color-option color-pink" data-color="#f50057"></div>
+        <div class="color-option color-teal" data-color="#00bfa5"></div>
+        <div class="color-option color-orange" data-color="#ff9100"></div>
+      </div>
+      <h2>Join Our Community</h2>
+      <p>Create your membership today</p>
+    </div>
+    <div class="form-body">
+      <form id="registrationForm" method="POST" action="/register">
+        <!-- Personal Information -->
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <div class="input-wrapper">
+            <i class="input-icon fas fa-user"></i>
+            <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+          </div>
+          <div class="error-message" id="name-error">Please enter your full name</div>
+        </div>
+        <div class="form-group">
+          <label for="age">Your Age</label>
+          <div class="input-wrapper">
+            <i class="input-icon fas fa-birthday-cake"></i>
+            <input type="number" name="age" id="age" placeholder="How old are you?" min="18" max="120" required>
+          </div>
+          <div class="error-message" id="age-error">Please enter a valid age (18-120)</div>
+        </div>
+        <div class="form-group">
+          <label for="date_of_joining">When Would You Like to Join?</label>
+          <div class="input-wrapper">
+            <i class="input-icon fas fa-calendar-alt"></i>
+            <input type="date" name="date_of_joining" id="date_of_joining" required>
+          </div>
+          <div class="error-message" id="date-error">Please select a valid date</div>
+        </div>
+        
+        <!-- Membership Options -->
+        <div class="form-group">
+          <label>Choose Your Perfect Plan</label>
+          <div class="membership-options">
+            <div class="membership-option" data-plan="Basic">
+              <i class="plan-icon fas fa-user"></i>
+              <p>Basic</p>
+            </div>
+            <div class="membership-option" data-plan="Premium">
+              <i class="plan-icon fas fa-star"></i>
+              <p>Premium</p>
+            </div>
+            <div class="membership-option" data-plan="Gold">
+              <i class="plan-icon fas fa-award"></i>
+              <p>Gold</p>
+            </div>
+            <div class="membership-option" data-plan="Platinum">
+              <i class="plan-icon fas fa-gem"></i>
+              <p>Platinum</p>
+            </div>
+            <div class="membership-option" data-plan="VIP">
+              <i class="plan-icon fas fa-crown"></i>
+              <p>VIP</p>
+            </div>
+          </div>
+          <div class="error-message" id="membership-error">Please select a membership plan</div>
+        </div>
+        
+        <!-- Enhanced Plan Description Area -->
+        <div id="plan-description" class="plan-description">
+          <!-- Description will appear here after selecting a plan -->
+        </div>
+        
+        <!-- Pricing Options for Each Plan -->
+        <!-- Basic Pricing -->
+        <div id="pricing-basic" class="pricing-options" >
+          <div class="pricing-option" data-period="1-month" data-price="1500" >
+            1 Month - ₹1,500
+          </div>
+          <div class="pricing-option" data-period="3-months" data-price="2500" >
+            3 Months - ₹2,500
+          </div>
+          <div class="pricing-option" data-period="6-months" data-price="4000">
+            6 Months - ₹4,000
+          </div>
+          <div class="pricing-option" data-period="1-year" data-price="6500">
+            1 Year - ₹6,500
+          </div>
+        </div>
+        <!-- Premium Pricing -->
+        <div id="pricing-premium" class="pricing-options">
+          <div class="pricing-option" data-period="1-month" data-price="2500">1 Month - ₹2,500</div>
+          <div class="pricing-option" data-period="3-months" data-price="4000">3 Months - ₹4,000</div>
+          <div class="pricing-option" data-period="6-months" data-price="6000">6 Months - ₹6,000</div>
+          <div class="pricing-option" data-period="1-year" data-price="8000">1 Year - ₹8,000</div>
+        </div>
+        <!-- Gold Pricing -->
+        <div id="pricing-gold" class="pricing-options">
+          <div class="pricing-option" data-period="1-month" data-price="4500">1 Month - ₹4,500</div>
+          <div class="pricing-option" data-period="3-months" data-price="6500">3 Months - ₹6,500</div>
+          <div class="pricing-option" data-period="6-months" data-price="9000">6 Months - ₹9,000</div>
+          <div class="pricing-option" data-period="1-year" data-price="12500">1 Year - ₹12,500</div>
+        </div>
+        <!-- Platinum Pricing -->
+        <div id="pricing-platinum" class="pricing-options">
+          <div class="pricing-option" data-period="1-month" data-price="8000">1 Month - ₹8,000</div>
+          <div class="pricing-option" data-period="3-months" data-price="12000">3 Months - ₹12,000</div>
+          <div class="pricing-option" data-period="6-months" data-price="20000">6 Months - ₹20,000</div>
+          <div class="pricing-option" data-period="1-year" data-price="35000">1 Year - ₹35,000</div>
+        </div>
+        <!-- VIP Pricing -->
+        <div id="pricing-vip" class="pricing-options">
+          <div class="pricing-option" data-period="1-month" data-price="15000">1 Month - ₹15,000</div>
+          <div class="pricing-option" data-period="3-months" data-price="30000">3 Months - ₹30,000</div>
+          <div class="pricing-option" data-period="6-months" data-price="55000">6 Months - ₹55,000</div>
+          <div class="pricing-option" data-period="1-year" data-price="80000">1 Year - ₹80,000</div>
+        </div>
+
+        <!-- Hidden Inputs for Membership Details -->
+        <input type="hidden" name="membership_type" id="membership_type" required>
+        <input type="hidden" name="pricing_period" id="pricing_period" required>
+        <input type="hidden" name="pricing_amount" id="pricing_amount" required>
+
+        <button type="submit" class="btn-submit" id="submit-btn" disabled>Join Now</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Color theme functionality
+      const colorOptions = document.querySelectorAll('.color-option');
+      colorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          const color = option.getAttribute('data-color');
+          document.documentElement.style.setProperty('--primary', color);
+          colorOptions.forEach(opt => opt.classList.remove('selected'));
+          option.classList.add('selected');
+          if (color === '#6c63ff') {
+            document.documentElement.style.setProperty('--secondary', '#f50057');
+          } else if (color === '#f50057') {
+            document.documentElement.style.setProperty('--secondary', '#6c63ff');
+          } else if (color === '#00bfa5') {
+            document.documentElement.style.setProperty('--secondary', '#ff9100');
+          } else if (color === '#ff9100') {
+            document.documentElement.style.setProperty('--secondary', '#00bfa5');
+          }
+        });
+      });
+
+      // Enhanced plan descriptions for each membership option
+      const planDescriptions = {
+        basic: `
+          <h3><i class="fas fa-user"></i> Basic Plan</h3>
+          <p>Perfect for those just beginning their fitness journey. Enjoy essential access and equipment.</p>
+          <ul>
+            <li><strong>Gym Access:</strong> Standard operating hours.</li>
+            <li><strong>Equipment:</strong> Full range of cardio and strength machines.</li>
+            <li><strong>Classes:</strong> A variety of group exercise sessions.</li>
+            <li><strong>Facilities:</strong> Clean locker and shower rooms.</li>
+          </ul>
+        `,
+        premium: `
+          <h3><i class="fas fa-star"></i> Premium Plan</h3>
+          <p>Step up your fitness game with extended hours and enhanced equipment.</p>
+          <ul>
+            <li><strong>Extended Hours:</strong> More time to work out.</li>
+            <li><strong>Advanced Equipment:</strong> Access to specialized machines.</li>
+            <li><strong>Fitness Assessments:</strong> Regular progress evaluations.</li>
+            <li><strong>Enhanced Classes:</strong> Specialized and varied sessions.</li>
+            <li><strong>Premium Facilities:</strong> Upgraded locker and shower amenities.</li>
+          </ul>
+        `,
+        gold: `
+          <h3><i class="fas fa-award"></i> Gold Plan</h3>
+          <p>For dedicated enthusiasts, combining Premium benefits with personal support.</p>
+          <ul>
+            <li><strong>All Premium Benefits:</strong> Everything included in Premium.</li>
+            <li><strong>Personal Training:</strong> 2 sessions/month.</li>
+            <li><strong>Nutritional Guidance:</strong> Expert advice for your diet.</li>
+            <li><strong>Priority Booking:</strong> Early reservations for classes.</li>
+            <li><strong>Exclusive Workshops:</strong> Member-only events and sessions.</li>
+          </ul>
+        `,
+        platinum: `
+          <h3><i class="fas fa-gem"></i> Platinum Plan</h3>
+          <p>A comprehensive wellness journey with round-the-clock access and exclusive perks.</p>
+          <ul>
+            <li><strong>24/7 Gym Access:</strong> Workout anytime.</li>
+            <li><strong>Unlimited Classes:</strong> Join any session.</li>
+            <li><strong>Advanced Training:</strong> Regular personal training and assessments.</li>
+            <li><strong>Wellness Perks:</strong> Discounts on spa, sauna, and massage.</li>
+            <li><strong>Priority Services:</strong> Enhanced booking and support.</li>
+          </ul>
+        `,
+        vip: `
+          <h3><i class="fas fa-crown"></i> VIP Plan</h3>
+          <p>The ultimate personalized experience with one-on-one attention and exclusive benefits.</p>
+          <ul>
+            <li><strong>All Platinum Benefits:</strong> Everything in Platinum included.</li>
+            <li><strong>Dedicated Trainer:</strong> Personalized sessions.</li>
+            <li><strong>Tailored Programs:</strong> Custom workout and nutrition plans.</li>
+            <li><strong>Private Facilities:</strong> Exclusive areas just for VIP members.</li>
+            <li><strong>Exclusive Invitations:</strong> Access to high-end events and workshops.</li>
+          </ul>
+        `
+      };
+
+      // Handle membership option click
+      const membershipOptions = document.querySelectorAll('.membership-option');
+      const pricingBasic = document.getElementById('pricing-basic');
+      const pricingPremium = document.getElementById('pricing-premium');
+      const pricingGold = document.getElementById('pricing-gold');
+      const pricingPlatinum = document.getElementById('pricing-platinum');
+      const pricingVip = document.getElementById('pricing-vip');
+      const pricingOptions = document.querySelectorAll('.pricing-option');
+      const submitBtn = document.getElementById('submit-btn');
+      const membershipInput = document.getElementById('membership_type');
+      const pricingPeriodInput = document.getElementById('pricing_period');
+      const pricingAmountInput = document.getElementById('pricing_amount');
+      const planDescriptionDiv = document.getElementById('plan-description');
+
+      membershipOptions.forEach(option => {
+        option.addEventListener('click', function () {
+          membershipOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          const plan = this.getAttribute('data-plan');
+          membershipInput.value = plan;
+          
+          // Display enhanced plan description
+          planDescriptionDiv.innerHTML = planDescriptions[plan.toLowerCase()] || '';
+          
+          // Hide all pricing containers
+          if (pricingBasic) pricingBasic.style.display = 'none';
+          if (pricingPremium) pricingPremium.style.display = 'none';
+          if (pricingGold) pricingGold.style.display = 'none';
+          if (pricingPlatinum) pricingPlatinum.style.display = 'none';
+          if (pricingVip) pricingVip.style.display = 'none';
+          
+          // Show the corresponding pricing container
+          if (plan.toLowerCase() === 'basic') {
+            pricingBasic.style.display = 'flex';
+          } else if (plan.toLowerCase() === 'premium') {
+            pricingPremium.style.display = 'flex';
+          } else if (plan.toLowerCase() === 'gold') {
+            pricingGold.style.display = 'flex';
+          } else if (plan.toLowerCase() === 'platinum') {
+            pricingPlatinum.style.display = 'flex';
+          } else if (plan.toLowerCase() === 'vip') {
+            pricingVip.style.display = 'flex';
+          }
+          
+          // Reset pricing selections
+          pricingOptions.forEach(opt => opt.classList.remove('selected'));
+          pricingPeriodInput.value = "";
+          pricingAmountInput.value = "";
+          submitBtn.disabled = true;
+          document.getElementById('membership-error').style.display = 'none';
+        });
+      });
+      
+      // Handle pricing option selection
+      pricingOptions.forEach(option => {
+        option.addEventListener('click', function () {
+          const container = this.parentElement;
+          container.querySelectorAll('.pricing-option').forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          
+          pricingPeriodInput.value = this.getAttribute('data-period');
+          pricingAmountInput.value = this.getAttribute('data-price');
+          
+          submitBtn.disabled = false;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

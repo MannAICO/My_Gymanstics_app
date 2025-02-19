@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ultra Modern Gym Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <style>
+    :root {
+      --neon-purple: #9b59b6;
+      /* Vibrant Purple */
+      --neon-blue: #00a8e8;
+      /* Bright Cyan Blue */
+      --neon-pink: #ff2e63;
+      /* Hot Neon Pink */
+      --card-bg: rgba(12, 12, 12, 0.9);
+      /* Darker for better contrast */
+      --border-color: rgba(255, 255, 255, 0.1);
+      /* Softer white glow */
+      --glow-color: rgba(255, 255, 255, 0.9);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      min-height: 100%;
+    }
+
+    body {
+      position: relative;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      background: linear-gradient(-45deg, #e73e0b, #050404, #192901, #4d013b);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .background-effects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+      backdrop-filter: blur(1px);
+      animation: bubbleRise linear infinite;
+    }
+
+    @keyframes bubbleRise {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translateY(-100vh) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 1rem;
+      z-index: 1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .logo {
+      font-size: 3.5rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, rgba(255, 0, 255, 0.8), rgba(0, 191, 255, 0.8), rgba(255, 20, 147, 0.8));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 25px var(--glow-color);
+    }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 0.5rem;
+    }
+
+    .nav-card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
+      background: conic-gradient(from 180deg at 50% 50%,
+          transparent,
+          var(--neon-blue),
+          transparent,
+          var(--neon-purple),
+          transparent);
+      animation: spin 10s linear infinite;
+      opacity: 0.15;
+      filter: blur(30px);
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      padding: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(to right, var(--neon-purple), var(--neon-blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-description {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.4;
+    }
+
+    /* Footer Styles */
+    .footer {
+      position: relative;
+      min-height: 400px;
+      background: linear-gradient(180deg,
+          rgba(0, 0, 20, 0.95),
+          rgba(20, 0, 40, 0.95));
+      overflow: hidden;
+      padding: 4rem 2rem;
+      z-index: 1;
+    }
+
+    /* 3D Cyber Grid */
+    .footer-cyber-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background-image:
+        linear-gradient(90deg, rgba(65, 184, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(65, 184, 255, 0.1) 1px, transparent 1px);
+      background-size: 40px 40px;
+      transform: perspective(1000px) rotateX(60deg) translateY(-50%) translateX(-25%);
+      transform-origin: center center;
+      animation: gridFlow 20s linear infinite;
+    }
+
+    /* DNA Helix Animation */
+    .dna-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform: scale(1.5);
+    }
+
+    .dna-helix {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(90deg,
+          transparent,
+          transparent 20px,
+          rgba(65, 184, 255, 0.1) 20px,
+          rgba(65, 184, 255, 0.1) 40px);
+      animation: dnaRotate 8s linear infinite;
+      transform-origin: center center;
+    }
+
+    /* Plasma Effect */
+    .plasma-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .plasma-ball {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.3;
+      animation: plasmaFloat 10s ease-in-out infinite;
+    }
+
+    .plasma-ball:nth-child(1) {
+      background: var(--neon-purple);
+      top: 20%;
+      left: 20%;
+    }
+
+    .plasma-ball:nth-child(2) {
+      background: var(--neon-blue);
+      top: 50%;
+      right: 20%;
+      animation-delay: -3s;
+    }
+
+    .plasma-ball:nth-child(3) {
+      background: var(--neon-pink);
+      bottom: 20%;
+      left: 40%;
+      animation-delay: -6s;
+    }
+
+    /* Neon Lines */
+    .neon-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .line {
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      background: linear-gradient(90deg,
+          transparent,
+          var(--neon-blue),
+          var(--neon-purple),
+          var(--neon-pink),
+          transparent);
+      animation: lineFlow 8s linear infinite;
+    }
+
+    .line:nth-child(1) {
+      top: 20%;
+      animation-delay: 0s;
+    }
+
+    .line:nth-child(2) {
+      top: 50%;
+      animation-delay: -2s;
+    }
+
+    .line:nth-child(3) {
+      top: 80%;
+      animation-delay: -4s;
+    }
+
+    /* Footer Content */
+    .footer-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    /* Brand Text */
+    .footer-brand {
+      position: relative;
+    }
+
+    .brand-text {
+      font-size: 3.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      background: linear-gradient(45deg,
+          var(--neon-purple),
+          var(--neon-blue),
+          var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: brandPulse 3s ease-in-out infinite;
+    }
+
+    .brand-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center,
+          rgba(255, 255, 255, 0.2),
+          transparent 70%);
+      filter: blur(20px);
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    /* Social Icons */
+    .social-icons {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .social-icon {
+      position: relative;
+      color: #fff;
+      font-size: 1.8rem;
+      padding: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .icon-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-blue);
+      opacity: 0;
+    }
+
+    .social-icon:hover {
+      color: var(--neon-blue);
+      transform: translateY(-5px);
+    }
+
+    .social-icon:hover .icon-pulse {
+      animation: iconPulse 1s ease-out;
+    }
+
+    /* Footer Credits */
+    .footer-credits {
+      text-align: center;
+    }
+
+    .credit-text {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0.5rem 0;
+    }
+
+    .highlight {
+      color: var(--neon-blue);
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(65, 184, 255, 0.5);
+    }
+
+    /* Animations */
+    @keyframes gridFlow {
+      0% {
+        transform: perspective(1000px) rotateX(60deg) translateY(-50%) translateX(-25%);
+      }
+
+      100% {
+        transform: perspective(1000px) rotateX(60deg) translateY(0%) translateX(-25%);
+      }
+    }
+
+    @keyframes dnaRotate {
+      0% {
+        transform: perspective(1000px) rotateX(0deg);
+      }
+
+      100% {
+        transform: perspective(1000px) rotateX(360deg);
+      }
+    }
+
+    @keyframes plasmaFloat {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(20px, -20px) scale(1.1);
+      }
+
+      50% {
+        transform: translate(-10px, 30px) scale(0.9);
+      }
+
+      75% {
+        transform: translate(-30px, -10px) scale(1.05);
+      }
+    }
+
+    @keyframes lineFlow {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    @keyframes brandPulse {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.3);
+      }
+    }
+
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.6;
+        transform: scale(1.2);
+      }
+    }
+
+    @keyframes iconPulse {
+      0% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.5);
+      }
+    }
+
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      html {
+        font-size: 14px;
+      }
+
+      .container {
+        padding: 0.5rem;
+      }
+
+      .logo {
+        font-size: 2.5rem;
+      }
+
+      .nav-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .footer {
+        padding: 3rem 1rem;
+      }
+
+      .brand-text {
+        font-size: 2.5rem;
+      }
+
+      .social-icons {
+        gap: 1.5rem;
+      }
+
+      .social-icon {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (hover: hover) {
+      .nav-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 10px 30px var(--glow-color);
+      }
+    }
+
+    @media (hover: none) {
+      .nav-card:active {
+        transform: scale(0.98);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background-effects" id="backgroundEffects"></div>
+
+  <div class="container">
+    <header class="header">
+      <h1 class="logo">ULTRAFIT</h1>
+    </header>
+
+    <div class="nav-grid">
+      <div class="nav-card">
+        <a href="/dashboard" class="nav-link">
+          <div class="nav-icon"><i class="fas fa-tachometer-alt"></i></div>
+          <h2 class="nav-title">Dashboard</h2>
+          <p class="nav-description">View key metrics and analytics</p>
+        </a>
+      </div>
+      <div class="nav-card">
+        <a href="/register" class="nav-link">
+          <div class="nav-icon"><i class="fas fa-user-plus"></i></div>
+          <h2 class="nav-title">Register</h2>
+          <p class="nav-description">Add new members and manage memberships</p>
+        </a>
+      </div>
+      <div class="nav-card">
+        <a href="/attendance" class="nav-link">
+          <div class="nav-icon"><i class="fas fa-calendar-check"></i></div>
+          <h2 class="nav-title">Attendance</h2>
+          <p class="nav-description">Track member check-ins and visits</p>
+        </a>
+      </div>
+      <div class="nav-card">
+        <a href="/invoice" class="nav-link">
+          <div class="nav-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+          <h2 class="nav-title">Invoice</h2>
+          <p class="nav-description">Generate invoices and send them via email</p>
+        </a>
+      </div>
+      <div class="nav-card">
+        <a href="/members" class="nav-link">
+          <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+          <h2 class="nav-title">Members</h2>
+          <p class="nav-description">View analytics and insights</p>
+        </a>
+      </div>
+      <div class="nav-card">
+        <a href="/reports" class="nav-link">
+          <div class="nav-icon"><i class="fas fa-users"></i></div>
+          <h2 class="nav-title">Reports</h2>
+          <p class="nav-description">View all registered members</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <!-- 3D Animated Background -->
+    <div class="footer-cyber-grid"></div>
+
+
+    <!-- - Plasma Effect -->
+    <div class="plasma-container">
+      <div class="plasma-ball"></div>
+      <div class="plasma-ball"></div>
+      <div class="plasma-ball"></div>
+    </div> 
+
+    <div class="neon-lines">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+
+      <div class="footer-credits">
+        <div class="credit-text">Created by <span class="highlight">Mann Makwana</span></div>
+        <div class="credit-text">All Rights Reserved © <span class="highlight">2025</span></div>
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    // Entrance Animation
+    gsap.from(".nav-card", {
+      duration: 0.8,
+      opacity: 0,
+      y: 30,
+      stagger: 0.1,
+      ease: "power2.out"
+    });
+
+    // Create animated bubbles
+    function createBubbles() {
+      const container = document.getElementById('backgroundEffects');
+      const bubbleCount = window.innerWidth < 768 ? 25 : 50; // Increased bubble count
+
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+
+        const size = Math.random() * (120 - 15) + 15; // Varied size range
+        const left = Math.random() * 100;
+        const duration = Math.random() * (25 - 10) + 10; // Longer duration
+        const delay = Math.random() * -30; // More varied delays
+
+        bubble.style.width = `${size}px`;
+        bubble.style.height = `${size}px`;
+        bubble.style.left = `${left}%`;
+        bubble.style.animationDuration = `${duration}s`;
+        bubble.style.animationDelay = `${delay}s`;
+
+        container.appendChild(bubble);
+      }
+    }
+
+    // Initialize bubbles
+    createBubbles();
+
+    // Recreate bubbles on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const container = document.getElementById('backgroundEffects');
+        container.innerHTML = '';
+        createBubbles();
+      }, 300);
+    });
+
+    // 3D card effect for devices with hover capability
+    if (window.matchMedia("(hover: hover)").matches) {
+      document.querySelectorAll('.nav-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const midX = rect.width / 2;
+          const midY = rect.height / 2;
+          const deltaX = (x - midX) / midX;
+          const deltaY = (y - midY) / midY;
+          card.style.transform = `perspective(1000px) rotateX(${deltaY * -5}deg) rotateY(${deltaX * 5}deg) translateY(-10px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

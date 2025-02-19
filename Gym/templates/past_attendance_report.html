@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Past Attendance Report</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #34495e;
+      --accent: #3498db;
+      --success: #2ecc71;
+      --warning: #f1c40f;
+      --danger: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+      --text-dark: #2c3e50;
+      --text-light: #ecf0f1;
+      --border-radius: 8px;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(120deg, #f5f7fa 0%, #e8ecf1 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding: 2rem 0;
+    }
+    
+    .attendance-card {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    
+    .card-header {
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .card-header .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+    
+    .header-icon {
+      font-size: 2rem;
+      opacity: 0.8;
+    }
+
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+    }
+    
+    .card-body {
+      padding: 2rem;
+    }
+    
+    .attendance-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .attendance-table th, .attendance-table td {
+      padding: 1rem;
+    }
+    
+    .attendance-table th {
+      background: var(--light-gray);
+      color: var(--secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .attendance-table td {
+      background: white;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .attendance-table td:last-child {
+      border-bottom: none;
+    }
+
+    .date-cell {
+      font-weight: 500;
+      color: var(--secondary);
+    }
+
+    .status-cell {
+      font-weight: 500;
+    }
+
+    .status-present {
+      color: var(--success);
+    }
+    
+    .status-absent {
+      color: var(--danger);
+    }
+    
+    .status-late {
+      color: var(--warning);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--dark-gray);
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-message {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card-footer {
+      background: #f8f9fa;
+      border-top: 1px solid var(--light-gray);
+      padding: 1.5rem;
+    }
+
+    .btn-action {
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .btn-icon {
+      margin-right: 0.5rem;
+    }
+
+    .btn-back {
+      background: var(--secondary);
+      color: white;
+      border: none;
+    }
+
+    .btn-back:hover,
+    .btn-back:focus {
+      background: #2c3e50;
+      color: white;
+    }
+
+    .btn-home {
+      background: var(--accent);
+      color: white;
+      border: none;
+    }
+
+    .btn-home:hover,
+    .btn-home:focus {
+      background: #2980b9;
+      color: white;
+    }
+
+    /* Adjustments for different screen sizes */
+    @media (max-width: 768px) {
+      .card-header {
+        padding: 1.25rem;
+      }
+      
+      .card-body {
+        padding: 1.5rem 1rem;
+      }
+      
+      .attendance-table th,
+      .attendance-table td {
+        padding: 0.75rem;
+      }
+      
+      .card-title {
+        font-size: 1.25rem;
+      }
+      
+      .header-icon {
+        font-size: 1.5rem;
+      }
+      
+      .btn-action {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+
+      .btn-action:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .attendance-table {
+        font-size: 0.9rem;
+      }
+
+      .card-header {
+        padding: 1rem;
+      }
+
+      .btn-action {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+
+      .btn-action:last-child {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10 col-sm-12">
+        <div class="attendance-card">
+          <div class="card-header">
+            <div class="header-content">
+              <h1 class="card-title">Past Attendance Report</h1>
+              <i class="fas fa-calendar-check header-icon"></i>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            {% if past_attendance %}
+              <div class="table-responsive">
+                <table class="attendance-table">
+                  <thead>
+                    <tr>
+                      <th scope="col" width="40%">Date</th>
+                      <th scope="col" width="60%">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for date, status in past_attendance.items() %}
+                      <tr>
+                        <td class="date-cell">
+                          <i class="far fa-calendar-alt me-2 text-muted"></i>
+                          {{ date }}
+                        </td>
+                        <td class="status-cell {% if status == 'Present' %}status-present{% elif status == 'Absent' %}status-absent{% elif status == 'Late' %}status-late{% endif %}">
+                          <i class="fas {% if status == 'Present' %}fa-check-circle{% elif status == 'Absent' %}fa-times-circle{% elif status == 'Late' %}fa-clock{% else %}fa-dot-circle{% endif %} me-2"></i>
+                          {{ status }}
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <i class="far fa-calendar-times"></i>
+                </div>
+                <p class="empty-message">No attendance data found for this member.</p>
+                <a href="{{ url_for('view_past_attendance_form') }}" class="btn btn-outline-secondary">
+                  <i class="fas fa-search me-2"></i>Search Another Member
+                </a>
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="card-footer">
+            <div class="d-flex flex-wrap justify-content-between">
+              <a href="{{ url_for('view_past_attendance_form') }}" class="btn btn-action btn-back mb-2 mb-sm-0">
+                <i class="fas fa-arrow-left btn-icon"></i>Back to Search
+              </a>
+              <a href="{{ url_for('home') }}" class="btn btn-action btn-home">
+                <i class="fas fa-home btn-icon"></i>Return to Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

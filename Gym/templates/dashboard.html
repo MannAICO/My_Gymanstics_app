@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 2.5rem;
+    }
+
+    .chart-container {
+      position: relative;
+      margin: auto;
+      height: 400px;
+      width: 80%;
+      margin-bottom: 3rem;
+    }
+
+    /* Navigation Section */
+    .nav-section {
+      display: flex;
+      justify-content: flex-start;
+      padding-top: 1rem;
+      border-top: 1px solid #eee;
+    }
+
+    /* Unique Gradient Home Button */
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px 28px;
+      border-radius: 50px;
+      text-decoration: none;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b, #ffeb3b, #42e695);
+      background-size: 200% 200%;
+      color: white;
+      border: none;
+      transition: all 0.4s ease-in-out;
+      box-shadow: 0 5px 15px rgba(255, 65, 108, 0.6);
+      animation: gradientShift 3s infinite;
+    }
+
+    .btn-home:hover {
+      background-position: right center;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 65, 108, 0.8);
+    }
+
+    .btn-home i {
+      font-size: 22px;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-home:hover i {
+      transform: scale(1.1);
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: left center; }
+      50% { background-position: right center; }
+      100% { background-position: left center; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      .chart-container {
+        width: 95%;
+        height: 300px;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        margin: 0.5rem;
+        padding: 1rem;
+      }
+
+      .chart-container {
+        height: 250px;
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-home {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+
+      .btn-home i {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gym Dashboard</h1>
+    <div class="chart-container">
+      <canvas id="attendanceChart"></canvas>
+    </div>
+    <div class="nav-section">
+      <a href="{{ url_for('home') }}" class="btn-home">
+        <i class="fas fa-home"></i> Home
+      </a>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Attendance This Week',
+        backgroundColor: 'rgba(99, 102, 241, 0.5)',
+        borderColor: 'rgba(99, 102, 241, 1)',
+        data: [30, 45, 28, 50, 60, 40, 35],
+      }]
+    };
+
+    const config = {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+
+    const attendanceChart = new Chart(
+      document.getElementById('attendanceChart'),
+      config
+    );
+  </script>
+</body>
+</html>

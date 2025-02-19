@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Attendance Dashboard</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a3a5f;
+      --secondary: #2c5282;
+      --accent: #3182ce;
+      --success: #38a169;
+      --danger: #e53e3e;
+      --warning: #dd6b20;
+      --light-bg: #f7fafc;
+      --border-color: #e2e8f0;
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+      background-color: #edf2f7;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    
+    .page-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    
+    .page-header {
+      margin-bottom: 2rem;
+    }
+    
+    .page-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .card {
+      border: none;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      background-color: white;
+      margin-bottom: 2rem;
+    }
+    
+    .card-header {
+      background-color: white;
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-header h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--primary);
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+    
+    .card-footer {
+      background-color: white;
+      border-top: 1px solid var(--border-color);
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .table-responsive {
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .table {
+      margin: 0;
+    }
+    
+    .table th {
+      background-color: var(--light-bg);
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.025em;
+      padding: 0.75rem 1.5rem;
+      border-top: none;
+    }
+    
+    .table td {
+      padding: 1rem 1.5rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+    
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .date-cell {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+      line-height: 1.25;
+    }
+    
+    .status-present {
+      background-color: #c6f6d5;
+      color: #22543d;
+    }
+    
+    .status-absent {
+      background-color: #fed7d7;
+      color: #822727;
+    }
+    
+    .status-late {
+      background-color: #feebc8;
+      color: #744210;
+    }
+    
+    .member-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .member-item:last-child {
+      border-bottom: none;
+    }
+    
+    .member-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+    }
+    
+    .btn-outline-primary {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      border-color: var(--danger);
+    }
+    
+    .btn-danger:hover {
+      background-color: #c53030;
+      border-color: #c53030;
+    }
+    
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+      }
+      
+      .action-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="page-header">
+      <h1 class="page-title">Attendance Management System</h1>
+      <p class="text-muted">Attendance Reports</p>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h2>
+          <i class="fas fa-clipboard-list me-2"></i>
+          Attendance Report
+        </h2>
+      </div>
+      
+      <div class="card-body p-0">
+        {% if attendance_data %}
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Attendance Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for date, records in attendance_data.items() %}
+                  <tr>
+                    <td class="date-cell" width="20%">
+                      <i class="far fa-calendar-alt me-2 text-muted"></i>
+                      {{ date }}
+                    </td>
+                    <td>
+                      {% if records is mapping %}
+                        <div class="attendance-list">
+                          {% for member_id, status in records.items() %}
+                            <div class="member-item">
+                              <div class="member-info">
+                                <i class="fas fa-user me-2 text-secondary"></i>
+                                <span class="fw-medium">ID: {{ member_id }}</span>
+                              </div>
+                              <span class="status-badge {% if status == 'Present' %}status-present{% elif status == 'Absent' %}status-absent{% elif status == 'Late' %}status-late{% endif %}">
+                                {{ status }}
+                              </span>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% else %}
+                        <span class="fst-italic text-muted">{{ records|join(', ') }}</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i class="far fa-clipboard"></i>
+            </div>
+            <h4>No Attendance Records</h4>
+            <p class="text-muted mb-4">There are currently no attendance records in the system.</p>
+            <button class="btn btn-primary">
+              <i class="fas fa-plus me-2"></i> Add New Record
+            </button>
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="card-footer">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="page-info">
+            {% if attendance_data %}
+              <span class="text-muted">Showing {{ attendance_data|length }} records</span>
+            {% endif %}
+          </div>
+          <div class="action-buttons d-flex gap-2">
+            <a href="{{ url_for('home') }}" class="btn btn-outline-primary action-btn">
+              <i class="fas fa-arrow-left"></i>
+              <span>Back to Dashboard</span>
+            </a>
+            {% if attendance_data %}
+              <form method="POST" action="{{ url_for('delete_attendance') }}" onsubmit="return confirm('Warning: This will permanently delete all attendance records. This action cannot be undone. Are you sure you want to proceed?');">
+                <button type="submit" class="btn btn-danger action-btn">
+                  <i class="fas fa-trash-alt"></i>
+                  <span>Delete All Records</span>
+                </button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

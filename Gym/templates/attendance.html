@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .bg-pattern {
+            background-color: #f8f9ff;
+            background-image: 
+                radial-gradient(at 80% 0%, rgb(225, 231, 255) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgb(214, 226, 255) 0px, transparent 50%),
+                radial-gradient(at 80% 100%, rgb(235, 238, 255) 0px, transparent 50%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+
+        .input-focus:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+            border-color: #4f46e5;
+        }
+
+        .card-border {
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+            transform: translateY(-1px);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background: #4f46e5;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .floating-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+    </style>
+</head>
+<body class="bg-pattern min-h-screen flex items-center justify-center py-12">
+    <div class="container mx-auto px-4 py-12 max-w-2xl">
+        <!-- Main Card -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl card-shadow p-8 card-border floating-card">
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">Mark Attendance</h1>
+                <p class="text-gray-600 text-lg">Record daily attendance for employees</p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'attendance' %}
+                            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                                <p class="text-blue-700">{{ message }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Form -->
+            <form method="POST" class="space-y-6">
+                <div>
+                    <label for="member_id" class="block text-sm font-medium text-gray-700 mb-2">
+                        Employee ID
+                    </label>
+                    <input type="text" 
+                           class="w-full px-4 py-3 border border-gray-200 rounded-lg input-focus focus:outline-none text-gray-900 bg-white/80"
+                           id="member_id" 
+                           name="member_id" 
+                           placeholder="Enter Employee ID" 
+                           required>
+                </div>
+
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                        Status
+                    </label>
+                    <select class="w-full px-4 py-3 border border-gray-200 rounded-lg input-focus focus:outline-none text-gray-900 bg-white/80"
+                            id="status" 
+                            name="status" 
+                            required>
+                        <option value="">Select Status</option>
+                        <option value="1">Present</option>
+                        <option value="0">Absent</option>
+                    </select>
+                </div>
+
+                <button type="submit" 
+                        class="w-full btn-gradient text-white py-3 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Submit Attendance
+                </button>
+            </form>
+
+            <!-- Navigation -->
+            <div class="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-gray-200">
+                <a href="{{ url_for('attendance_report') }}" 
+                   class="nav-link text-indigo-600 hover:text-indigo-800 text-sm text-center smooth-transition">
+                    View Report
+                </a>
+                <a href="{{ url_for('view_past_attendance_form') }}" 
+                   class="nav-link text-indigo-600 hover:text-indigo-800 text-sm text-center smooth-transition">
+                    Past Records
+                </a>
+                <a href="{{ url_for('home') }}" 
+                   class="nav-link text-indigo-600 hover:text-indigo-800 text-sm text-center smooth-transition">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

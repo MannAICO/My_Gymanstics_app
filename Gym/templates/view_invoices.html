@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Management | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --surface-color: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            background-color: var(--surface-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--primary-color);
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .table-responsive {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            border: none;
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            color: #475569;
+            font-size: 0.875rem;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-paid {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-mark-paid {
+            background-color: var(--success-color);
+            border: none;
+            color: white;
+        }
+
+        .btn-mark-paid:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-paid-disabled {
+            background-color: #e2e8f0;
+            border: none;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .btn-back {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .btn-back:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .amount-cell {
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+        }
+
+        .date-cell {
+            color: #64748b;
+        }
+
+        .empty-state {
+            padding: 3rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                border-radius: 12px;
+            }
+            
+            .table thead th {
+                padding: 0.75rem;
+                font-size: 0.75rem;
+            }
+            
+            .table tbody td {
+                padding: 0.75rem;
+                font-size: 0.75rem;
+            }
+            
+            .status-badge {
+                padding: 0.35rem 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="page-header">
+            <h1 class="page-title">Invoice Management</h1>
+            <a href="{{ url_for('home') }}" class="btn btn-back">
+                Back to Dashboard
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Invoice ID</th>
+                            <th>Member ID</th>
+                            <th>Amount</th>
+                            <th>Date Issued</th>
+                            <th>Description</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice.invoice_id }}</td>
+                            <td>{{ invoice.member_id }}</td>
+                            <td class="amount-cell">₹{{ invoice.amount }}</td>
+                            <td class="date-cell">{{ invoice.date_issued }}</td>
+                            <td>{{ invoice.description }}</td>
+                            <td class="date-cell">{{ invoice.due_date }}</td>
+                            <td>
+                                <span class="status-badge {% if invoice.status == 'Paid' %}status-paid{% else %}status-pending{% endif %}">
+                                    {{ invoice.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if invoice.status != 'Paid' %}
+                                <form action="{{ url_for('mark_paid', invoice_id=invoice.invoice_id) }}" method="post">
+                                    <button type="submit" class="btn btn-mark-paid">Mark as Paid</button>
+                                </form>
+                                {% else %}
+                                <button class="btn btn-paid-disabled" disabled>Paid</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                No invoices found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GYM MEMBERS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --secondary: #EC4899;
+            --surface-light: #FFFFFF;
+            --surface-dark: #1E1B4B;
+            --background: #F8FAFC;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --gold: #FBB03B;
+            --platinum: #E5E7EB;
+            --vip: #D946EF;
+            --premium: #6366F1;
+            --basic: #94A3B8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--surface-light);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                        0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(236, 72, 153, 0.1));
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 70%);
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            transform: rotate(-10deg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        .header-icon:hover {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .title-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background-clip: text;
+            background-clip: text;
+            background-clip: text;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .table-container {
+            background: var(--surface-light);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                        0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(236, 72, 153, 0.1));
+        }
+
+        th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid rgba(79, 70, 229, 0.1);
+        }
+
+        td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #E2E8F0;
+            color: var(--text-primary);
+            font-size: 0.925rem;
+        }
+
+        tr:hover td {
+            background: #F8FAFC;
+        }
+
+        .membership-badge {
+            padding: 0.75rem 1.25rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .membership-badge i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .membership-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+        }
+
+        .vip {
+            background: linear-gradient(135deg, #D946EF, #C026D3);
+            color: white;
+        }
+
+        .gold {
+            background: linear-gradient(135deg, #FBB03B, #F59E0B);
+            color: white;
+        }
+
+        .platinum {
+            background: linear-gradient(135deg, #E5E7EB, #9CA3AF);
+            color: #1F2937;
+        }
+
+        .premium {
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+        }
+
+        .basic {
+            background: linear-gradient(135deg, #94A3B8, #64748B);
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .view-btn {
+            background: linear-gradient(135deg, var(--primary), #818CF8);
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .action-btn i {
+            font-size: 1rem;
+            z-index: 1;
+        }
+
+        .empty-row {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .empty-row i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Status Indicator */
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            td, th {
+                padding: 1rem;
+            }
+
+            .action-btn {
+                width: 32px;
+                height: 32px;
+            }
+
+            .membership-badge {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .header-title {
+                flex-direction: column;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        .table-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #F1F5F9;
+            border-radius: 3px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <div class="header-title">
+                <div class="header-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="title-text">
+                    <h2>GYM MEMBERS</h2>
+                    <span class="subtitle">Member Management Dashboard</span>
+                </div>
+                 <!-- Back to Home Button using an anchor tag with url_for -->
+                 <a href="{{ url_for('home') }}" class="btn back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </a>
+                
+                <style>
+                    .back-button {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-size: 22px;
+                        font-weight: bold;
+                        padding: 12px 20px;
+                        border-radius: 30px;
+                        text-decoration: none;
+                        background: linear-gradient(135deg, #6a11cb, #2575fc);
+                        color: white;
+                        transition: 0.3s ease;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                    }
+                
+                    .back-button i {
+                        font-size: 26px;
+                    }
+                
+                    .back-button:hover {
+                        transform: scale(1.1);
+                        background: linear-gradient(135deg, #2575fc, #6a11cb);
+                        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+                    }
+                </style>
+                
+                 
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Member ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Membership</th>
+                        <th>Joined Date</th>
+                        <th>Period</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{ member.member_id }}</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-indicator" style="background: #10B981;"></span>
+                                {{ member.name }}
+                            </div>
+                        </td>
+                        <td>{{ member.age }}</td>
+                        <td>
+                            <span class="membership-badge {{ member.membership_type.lower() }}">
+                                {% if member.membership_type.lower() == 'basic' %}
+                                    <i class="fas fa-dumbbell"></i>
+                                {% elif member.membership_type.lower() == 'premium' %}
+                                    <i class="fas fa-bolt"></i>
+                                {% elif member.membership_type.lower() == 'platinum' %}
+                                    <i class="fas fa-gem"></i>
+                                {% elif member.membership_type.lower() == 'gold' %}
+                                    <i class="fas fa-crown"></i>
+                                {% elif member.membership_type.lower() == 'vip' %}
+                                    <i class="fas fa-trophy"></i>
+                                {% endif %}
+                                {{ member.membership_type }}
+                            </span>
+                        </td>
+                        <td>{{ member.date_of_joining }}</td>
+                        <td>{{ member.pricing_period or 'N/A' }}</td>
+                        <td>₹{{ member.pricing_amount or 'N/A' }}</td>
+                        <td>
+                            <div class="actions">
+                                <div class="action-btn view-btn" onclick="viewMember('{{ member.member_id }}')">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="action-btn edit-btn" onclick="editMember('{{ member.member_id }}')">
+                                    <i class="fas fa-pen"></i>
+                                </div>
+                                <div class="action-btn delete-btn" onclick="deleteMember('{{ member.member_id }}')">
+                                    <i class="fas fa-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not members %}
+                    <tr>
+                        <td colspan="9" class="empty-row">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <i class="fas fa-users-slash"></i>
+                                <span>No members found</span>
+                                <span style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                                    Add new members to see them listed here
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                color: white;
+                font-weight: 500;
+                z-index: 1000;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                           0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            `;
+
+            const icon = document.createElement('i');
+            
+            if (type === 'success') {
+                toast.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+                icon.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                toast.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+                icon.className = 'fas fa-exclamation-circle';
+            }
+
+            toast.appendChild(icon);
+            toast.appendChild(document.createTextNode(message));
+            document.body.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // View member function
+        function viewMember(memberId) {
+            window.location.href = `/member/view/${memberId}`;
+        }
+
+        // Edit member function
+        function editMember(memberId) {
+            window.location.href = `/member/edit/${memberId}`;
+        }
+
+        // Delete member function with confirmation
+        function deleteMember(memberId) {
+            const confirmDialog = document.createElement('div');
+            confirmDialog.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+
+            const dialogContent = document.createElement('div');
+            dialogContent.style.cssText = `
+                background: white;
+                padding: 2rem;
+                border-radius: 1rem;
+                max-width: 400px;
+                width: 90%;
+                transform: translateY(-20px);
+                transition: transform 0.3s ease;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            `;
+
+            dialogContent.innerHTML = `
+                <h3 style="margin: 0 0 1rem; color: var(--text-primary);">Confirm Deletion</h3>
+                <p style="margin: 0 0 1.5rem; color: var(--text-secondary);">
+                    Are you sure you want to delete member ${memberId}? 
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button id="cancelBtn" style="
+                        padding: 0.5rem 1rem;
+                        border: none;
+                        border-radius: 0.5rem;
+                        background: #E5E7EB;
+                        color: var(--text-primary);
+                        cursor: pointer;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                    ">Cancel</button>
+                    <button id="deleteBtn" style="
+                        padding: 0.5rem 1rem;
+                        border: none;
+                        border-radius: 0.5rem;
+                        background: linear-gradient(135deg, #EF4444, #DC2626);
+                        color: white;
+                        cursor: pointer;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                    ">Delete</button>
+                </div>
+            `;
+
+            confirmDialog.appendChild(dialogContent);
+            document.body.appendChild(confirmDialog);
+
+            // Show dialog with animation
+            setTimeout(() => {
+                confirmDialog.style.opacity = '1';
+                dialogContent.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Handle button clicks
+            document.getElementById('cancelBtn').onclick = () => {
+                closeDialog();
+            };
+
+            document.getElementById('deleteBtn').onclick = () => {
+                closeDialog();
+                performDelete(memberId);
+            };
+
+            function closeDialog() {
+                confirmDialog.style.opacity = '0';
+                dialogContent.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    document.body.removeChild(confirmDialog);
+                }, 300);
+            }
+        }
+
+        // Perform delete operation
+        function performDelete(memberId) {
+            fetch(`/member/delete/${memberId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    showToast('Member deleted successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showToast('Failed to delete member. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred while deleting the member.', 'error');
+            });
+        }
+
+        // Add hover effect to table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'scale(1.01)';
+                row.style.transition = 'transform 0.3s ease';
+            });
+
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

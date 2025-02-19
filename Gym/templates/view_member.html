@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Profile | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gradient-start: #4f46e5;
+            --gradient-end: #7c3aed;
+            --surface-color: #fafafa;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            background-color: var(--surface-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .profile-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+        }
+
+        .card-content {
+            padding: 2.5rem;
+        }
+
+        .member-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .membership-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            margin-top: 2.5rem;
+            text-align: center;
+        }
+
+        .btn-back {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-container {
+                margin: 2rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 class="profile-title">Member Profile</h1>
+        </div>
+
+        <div class="profile-card">
+            <div class="card-content">
+                <h2 class="member-name">{{ member.name }}</h2>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Member ID</div>
+                        <div class="info-value">#{{ member.member_id }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Age</div>
+                        <div class="info-value">{{ member.age }} years</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Membership Type</div>
+                        <div class="info-value">
+                            <span class="membership-badge">{{ member.membership_type }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Date of Joining</div>
+                        <div class="info-value">{{ member.date_of_joining }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Billing Period</div>
+                        <div class="info-value">{{ member.pricing_period }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">Membership Fee</div>
+                        <div class="info-value">${{ member.pricing_amount }}</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="{{ url_for('list_members') }}" class="btn btn-back">
+                        Back to Members List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

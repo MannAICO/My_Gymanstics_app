@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Gym Reports</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary: #0ea5e9;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #334155;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .header {
+      position: relative;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      border-radius: 1rem;
+      background: var(--card);
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+      );
+      transform: rotate(45deg);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(to right, var(--secondary), var(--primary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+      font-weight: 600;
+    }
+
+    .header h1::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, var(--secondary), var(--primary-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: underline 1s forwards;
+    }
+
+    @keyframes underline {
+      to { transform: scaleX(1); }
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 0.875rem 1.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 50%);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s;
+    }
+
+    .btn:hover::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .table-wrapper {
+      background: var(--card);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 2.5rem;
+    }
+
+    .table-wrapper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+      pointer-events: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: rgba(255,255,255,0.05);
+      padding: 1.25rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      position: relative;
+      color: var(--secondary);
+    }
+
+    th::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+    }
+
+    td {
+      padding: 1.25rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    tr {
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.03);
+      transform: scale(1.01);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+    }
+
+    .status-badge i {
+      font-size: 0.625rem;
+    }
+
+    .chart-section {
+      display: none;
+      background: var(--card);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      margin-top: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .chart-section.visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .chart-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--card);
+    }
+
+    .chart-tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .chart-tabs::-webkit-scrollbar-track {
+      background: var(--card);
+      border-radius: 3px;
+    }
+
+    .chart-tabs::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 3px;
+    }
+
+    .chart-tab {
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .chart-tab:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .chart-tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    #mainChart {
+      max-width: 100%;
+      height: 400px !important;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .empty-state p {
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .table-wrapper {
+        overflow-x: auto;
+      }
+      
+      .controls {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .chart-tabs {
+        padding-bottom: 1rem;
+      }
+
+      th, td {
+        padding: 1rem 0.75rem;
+      }
+
+      .status-badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .header {
+        padding: 1.5rem;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Advanced Gym Analytics</h1>
+      <div class="controls">
+        <button class="btn" onclick="toggleCharts()">
+          <i class="fas fa-chart-line"></i>
+          Analytics Dashboard
+        </button>
+        <!-- Export CSV Button -->
+        <button class="btn" onclick="exportCSV()">
+          <i class="fas fa-file-csv"></i>
+          Export CSV
+        </button>
+        <!-- Back to Home Button using an anchor tag with url_for -->
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">
+          <i class="fas fa-home"></i> Home
+      </a>      
+      </div>
+    </header>
+
+    <div class="table-wrapper">
+      {% if members %}
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Member ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Membership</th>
+            <th>Pricing Period</th>
+            <th>Pricing Amount</th>
+            <th>Status</th>
+            <th>Joined Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member in members %}
+          <tr class="member-row" data-id="{{ member.member_id }}">
+            <td>{{ loop.index }}</td>
+            <td>{{ member.member_id }}</td>
+            <td>{{ member.name }}</td>
+            <td>{{ member.age }}</td>
+            <td>{{ member.membership_type }}</td>
+            <td>{{ member.pricing_period or 'N/A' }}</td>
+            <td>₹{{ member.pricing_amount or 'N/A' }}</td>
+            <td>
+              <span class="status-badge status-active">
+                <i class="fas fa-circle"></i>
+                Active
+              </span>
+            </td>
+            <td>{{ member.date_of_joining }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <i class="fas fa-users"></i>
+        <h2>No Members Found</h2>
+        <p>Start by adding new members to the system.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="chart-section" id="chartSection">
+      <div class="chart-tabs">
+        <button class="chart-tab active" onclick="switchChart('membership')">Membership Distribution</button>
+        <button class="chart-tab" onclick="switchChart('age')">Age Demographics</button>
+        <button class="chart-tab" onclick="switchChart('attendance')">Attendance Trends</button>
+      </div>
+      <div style="position: relative; height: 400px;">
+        <canvas id="mainChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // GSAP Animations
+    gsap.from(".header", {
+      duration: 1,
+      y: -50,
+      opacity: 0,
+      ease: "power3.out"
+    });
+
+    gsap.from(".table-wrapper", {
+      duration: 1,
+      y: 50,
+      opacity: 0,
+      delay: 0.3,
+      ease: "power3.out"
+    });
+
+    // Row hover animation
+    document.querySelectorAll('.member-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        gsap.to(row, {
+          duration: 0.3,
+          backgroundColor: "rgba(255,255,255,0.05)",
+          scale: 1.01,
+          ease: "power2.out"
+        });
+      });
+
+      row.addEventListener('mouseleave', () => {
+        gsap.to(row, {
+          duration: 0.3,
+          backgroundColor: "transparent",
+          scale: 1,
+          ease: "power2.out"
+        });
+      });
+    });
+
+    // Chart functionality
+    let currentChart = null;
+
+    function toggleCharts() {
+      const section = document.getElementById('chartSection');
+      const isVisible = section.classList.contains('visible');
+      
+      if (!isVisible) {
+        section.style.display = 'block';
+        setTimeout(() => {
+          section.classList.add('visible');
+          showChart('membership');
+        }, 50);
+      } else {
+        section.classList.remove('visible');
+        setTimeout(() => {
+          section.style.display = 'none';
+        }, 500);
+      }
+    }
+
+    function switchChart(type) {
+      document.querySelectorAll('.chart-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelector(`.chart-tab[onclick="switchChart('${type}')"]`).classList.add('active');
+      showChart(type);
+    }
+
+    function showChart(type) {
+      if (currentChart) {
+        currentChart.destroy();
+      }
+
+      const ctx = document.getElementById('mainChart').getContext('2d');
+      let data, options;
+
+      switch(type) {
+        case 'membership':
+          data = {
+            labels: ['Basic', 'Premium', 'Gold', 'Platinum'],
+            datasets: [{
+              label: 'Members',
+              data: [30, 45, 25, 15],
+              backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
+              borderWidth: 0,
+              borderRadius: 5
+            }]
+          };
+          options = {
+            plugins: {
+              legend: {
+                display: true,
+                position: 'right',
+                labels: {
+                  color: '#f8fafc',
+                  padding: 20,
+                  font: {
+                    family: "'Poppins', sans-serif",
+                    size: 12
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1e293b',
+                titleColor: '#f8fafc',
+                bodyColor: '#f8fafc',
+                bodyFont: {
+                  family: "'Poppins', sans-serif"
+                },
+                padding: 12,
+                cornerRadius: 8,
+                boxPadding: 6
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+          };
+          break;
+        case 'age':
+          data = {
+            labels: ['18-25', '26-35', '36-45', '45+'],
+            datasets: [{
+              label: 'Members',
+              data: [40, 35, 15, 10],
+              backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
+              borderWidth: 0,
+              borderRadius: 5
+            }]
+          };
+          options = {
+            plugins: {
+              legend: {
+                display: true,
+                position: 'right',
+                labels: {
+                  color: '#f8fafc',
+                  padding: 20,
+                  font: {
+                    family: "'Poppins', sans-serif",
+                    size: 12
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1e293b',
+                titleColor: '#f8fafc',
+                bodyColor: '#f8fafc',
+                bodyFont: {
+                  family: "'Poppins', sans-serif"
+                },
+                padding: 12,
+                cornerRadius: 8,
+                boxPadding: 6
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+          };
+          break;
+        case 'attendance':
+          data = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+              label: 'Weekly Attendance',
+              data: [65, 75, 70, 80, 85, 45, 40],
+              borderColor: '#4f46e5',
+              backgroundColor: 'rgba(79, 70, 229, 0.2)',
+              pointBackgroundColor: '#4f46e5',
+              pointBorderColor: '#ffffff',
+              pointHoverBackgroundColor: '#ffffff',
+              pointHoverBorderColor: '#4f46e5',
+              tension: 0.4,
+              fill: true
+            }]
+          };
+          options = {
+            scales: {
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.05)'
+                },
+                ticks: {
+                  color: '#94a3b8',
+                  font: {
+                    family: "'Poppins', sans-serif"
+                  }
+                }
+              },
+              x: {
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.05)'
+                },
+                ticks: {
+                  color: '#94a3b8',
+                  font: {
+                    family: "'Poppins', sans-serif"
+                  }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#f8fafc',
+                  font: {
+                    family: "'Poppins', sans-serif",
+                    size: 12
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1e293b',
+                titleColor: '#f8fafc',
+                bodyColor: '#f8fafc',
+                bodyFont: {
+                  family: "'Poppins', sans-serif"
+                },
+                padding: 12,
+                cornerRadius: 8,
+                boxPadding: 6
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+          };
+          break;
+      }
+
+      const chartType = (type === 'attendance') ? 'line' : 'doughnut';
+      currentChart = new Chart(ctx, {
+        type: chartType,
+        data: data,
+        options: options || {}
+      });
+    }
+
+    // Export CSV Functionality
+    function exportCSV() {
+      const table = document.querySelector('.table-wrapper table');
+      if (!table) {
+        alert('No data available to export.');
+        return;
+      }
+      
+      let csv = [];
+      const headers = [];
+      table.querySelectorAll('thead tr th').forEach(th => {
+        headers.push(th.innerText.trim());
+      });
+      csv.push(headers.join(','));
+      
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const row = [];
+        tr.querySelectorAll('td').forEach(td => {
+          row.push('"' + td.innerText.trim().replace(/"/g, '""') + '"');
+        });
+        csv.push(row.join(','));
+      });
+      
+      const csvString = csv.join('\n');
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'gym_reports.csv';
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function checkMobile() {
+      if (window.innerWidth <= 768) {
+        if (currentChart) {
+          if (currentChart.config.type === 'doughnut') {
+            currentChart.options.plugins.legend.position = 'bottom';
+          }
+          currentChart.update();
+        }
+      }
+    }
+
+    window.addEventListener('resize', checkMobile);
+    
+    checkMobile();
+  </script>
+</body>
+</html>
