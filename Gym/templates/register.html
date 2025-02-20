@@ -86,7 +86,7 @@
     .color-purple { background-color: #6c63ff; }
     .color-pink { background-color: #f50057; }
     .color-teal { background-color: #00bfa5; }
-    .color-orange { background-color: #eaa206; }
+    .color-orange { background-color: #ff9100; }
     
     .form-body {
       padding: 30px;
@@ -117,7 +117,9 @@
     
     input[type="text"],
     input[type="number"],
-    input[type="date"] {
+    input[type="date"],
+    input[type="email"],
+    textarea {
       width: 100%;
       padding: 12px 12px 12px 35px;
       border: 1px solid #ddd;
@@ -126,7 +128,8 @@
       transition: border-color 0.3s;
     }
     
-    input:focus {
+    input:focus,
+    textarea:focus {
       outline: none;
       border-color: var(--primary);
     }
@@ -304,7 +307,24 @@
           </div>
           <div class="error-message" id="date-error">Please select a valid date</div>
         </div>
-        
+        <!-- New Email Field -->
+        <div class="form-group">
+          <label for="email">Your Email ID </label>
+          <div class="input-wrapper">
+            <i class="input-icon fas fa-envelope"></i>
+            <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+          </div>
+          <div class="error-message" id="email-error">Please enter a valid email id</div>
+        </div>
+        <!-- New Address Field -->
+        <div class="form-group">
+          <label for="address">Your Address</label>
+          <div class="input-wrapper">
+            <i class="input-icon fas fa-map-marker-alt"></i>
+            <textarea name="address" id="address" placeholder="Enter your address" rows="3" required></textarea>
+          </div>
+          <div class="error-message" id="address-error">Please enter your address</div>
+        </div>
         <!-- Membership Options -->
         <div class="form-group">
           <label>Choose Your Perfect Plan</label>
@@ -340,11 +360,11 @@
         
         <!-- Pricing Options for Each Plan -->
         <!-- Basic Pricing -->
-        <div id="pricing-basic" class="pricing-options" >
-          <div class="pricing-option" data-period="1-month" data-price="1500" >
+        <div id="pricing-basic" class="pricing-options">
+          <div class="pricing-option" data-period="1-month" data-price="1500">
             1 Month - ₹1,500
           </div>
-          <div class="pricing-option" data-period="3-months" data-price="2500" >
+          <div class="pricing-option" data-period="3-months" data-price="2500">
             3 Months - ₹2,500
           </div>
           <div class="pricing-option" data-period="6-months" data-price="4000">

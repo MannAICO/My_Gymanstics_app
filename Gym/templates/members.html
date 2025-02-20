@@ -1,682 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GYM MEMBERS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4F46E5;
-            --secondary: #EC4899;
-            --surface-light: #FFFFFF;
-            --surface-dark: #1E1B4B;
-            --background: #F8FAFC;
-            --text-primary: #1E293B;
-            --text-secondary: #64748B;
-            --gold: #FBB03B;
-            --platinum: #E5E7EB;
-            --vip: #D946EF;
-            --premium: #6366F1;
-            --basic: #94A3B8;
-        }
+  <meta charset="UTF-8">
+  <title>GYM MEMBERS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --secondary: #EC4899;
+      --surface-light: #FFFFFF;
+      --surface-dark: #1E1B4B;
+      --background: #F8FAFC;
+      --text-primary: #1E293B;
+      --text-secondary: #64748B;
+      --gold: #FBB03B;
+      --platinum: #E5E7EB;
+      --vip: #D946EF;
+      --premium: #6366F1;
+      --basic: #94A3B8;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', sans-serif;
+    }
 
-        body {
-            background: var(--background);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 2rem;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
-        }
+    body {
+      background: var(--background);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 2rem;
+      background-image:
+        radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+    }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            background: var(--surface-light);
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                        0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: var(--surface-light);
+      padding: 1.5rem 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
 
-        .dashboard-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(236, 72, 153, 0.1));
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 70%);
-        }
+    .dashboard-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(236, 72, 153, 0.1));
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 70%);
+    }
 
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
 
-        .header-icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            transform: rotate(-10deg);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-        }
+    .header-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--surface-light);
+      font-size: 1.75rem;
+      transform: rotate(-10deg);
+      transition: transform 0.3s ease;
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    }
 
-        .header-icon:hover {
-            transform: rotate(0deg) scale(1.1);
-        }
+    .header-icon:hover {
+      transform: rotate(0deg) scale(1.1);
+    }
 
-        .title-text {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
+    .title-text h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            background-clip: text;
-            background-clip: text;
-            background-clip: text;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+    }
 
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
+    /* Back button using history.back() */
+    .back-button {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgb(0, 12, 17);
+      color: var(--surface-light);
+      text-decoration: none;
+      border-radius: 6px;
+      margin-left: auto;
+      font-weight: 600;
+      border-top-right-radius: 20px;
+      transition: background 0.3s ease;
+    }
 
-        .table-container {
-            background: var(--surface-light);
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                        0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            position: relative;
-        }
+    .back-button:hover {
+      background: #2563EB;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    /* Controls for filtering, sorting and search */
+    .controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
 
-        thead {
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(236, 72, 153, 0.1));
-        }
+    .controls select,
+    .controls input[type="text"] {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--surface-dark);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
 
-        th {
-            padding: 1.25rem 1.5rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 2px solid rgba(79, 70, 229, 0.1);
-        }
+    .table-container {
+      background: var(--surface-light);
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.05);
+      overflow-x: auto;
+      border: 1px solid var(--background);
+      margin-bottom: 2rem;
+    }
 
-        td {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #E2E8F0;
-            color: var(--text-primary);
-            font-size: 0.925rem;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1200px;
+    }
 
-        tr:hover td {
-            background: #F8FAFC;
-        }
+    thead {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(236, 72, 153, 0.1));
+    }
 
-        .membership-badge {
-            padding: 0.75rem 1.25rem;
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+    th {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid var(--background);
+    }
 
-        .membership-badge i {
-            font-size: 1rem;
-            width: 20px;
-            text-align: center;
-        }
+    td {
+      padding: 1rem 1.5rem;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--background);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-        .membership-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
-        }
+    tr:hover td {
+      background: var(--background);
+      transition: background 0.3s ease;
+    }
 
-        .vip {
-            background: linear-gradient(135deg, #D946EF, #C026D3);
-            color: white;
-        }
+    .membership-badge {
+      padding: 0.5rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--surface-light);
+    }
 
-        .gold {
-            background: linear-gradient(135deg, #FBB03B, #F59E0B);
-            color: white;
-        }
+    .membership-badge i {
+      font-size: 0.75rem;
+      width: 18px;
+      text-align: center;
+    }
 
-        .platinum {
-            background: linear-gradient(135deg, #E5E7EB, #9CA3AF);
-            color: #1F2937;
-        }
+    .vip {
+      background: var(--vip);
+    }
 
-        .premium {
-            background: linear-gradient(135deg, #6366F1, #4F46E5);
-            color: white;
-        }
+    .gold {
+      background: var(--gold);
+    }
 
-        .basic {
-            background: linear-gradient(135deg, #94A3B8, #64748B);
-            color: white;
-        }
+    .platinum {
+      background: var(--platinum);
+      color: var(--text-primary);
+    }
 
-        .actions {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-        }
+    .premium {
+      background: var(--premium);
+    }
 
-        .action-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+    .basic {
+      background: var(--basic);
+    }
 
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
 
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
-        }
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: var(--secondary);
+      color: var(--surface-light);
+    }
 
-        .action-btn:hover::before {
-            transform: translateX(0);
-        }
+    .action-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
 
-        .view-btn {
-            background: linear-gradient(135deg, var(--primary), #818CF8);
-        }
+    .view-btn {
+      background: blue;
+    }
 
-        .edit-btn {
-            background: linear-gradient(135deg, #10B981, #059669);
-        }
+    .edit-btn {
+      background: #025e0a;
+    }
 
-        .delete-btn {
-            background: linear-gradient(135deg, #EF4444, #DC2626);
-        }
+    .delete-btn {
+      background: #EF4444;
+    }
 
-        .action-btn i {
-            font-size: 1rem;
-            z-index: 1;
-        }
+    .empty-row {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
 
-        .empty-row {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
+    .empty-row i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      -webkit-text-fill-color: transparent;
+    }
 
-        .empty-row i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-text-fill-color: transparent;
-        }
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
 
-        /* Status Indicator */
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+      }
 
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-            }
-        }
+      70% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .table-container {
-                overflow-x: auto;
-            }
-            
-            td, th {
-                padding: 1rem;
-            }
+      100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
+    }
 
-            .action-btn {
-                width: 32px;
-                height: 32px;
-            }
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      table {
+        min-width: 100%;
+      }
 
-            .membership-badge {
-                padding: 0.5rem 1rem;
-            }
-        }
+      th,
+      td {
+        padding: 0.75rem 1rem;
+        font-size: 0.8rem;
+      }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
+      .action-btn {
+        width: 32px;
+        height: 32px;
+      }
 
-            .dashboard-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-                padding: 1.5rem;
-            }
+      .membership-badge {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
+      }
+    }
 
-            .header-title {
-                flex-direction: column;
-            }
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
 
-            h2 {
-                font-size: 1.5rem;
-            }
+      .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 1.5rem;
+      }
 
-            .header-icon {
-                width: 48px;
-                height: 48px;
-                font-size: 1.5rem;
-            }
-        }
+      .header-title {
+        flex-direction: column;
+      }
 
-        /* Custom Scrollbar */
-        .table-container::-webkit-scrollbar {
-            height: 6px;
-        }
+      h2 {
+        font-size: 1.5rem;
+      }
 
-        .table-container::-webkit-scrollbar-track {
-            background: #F1F5F9;
-            border-radius: 3px;
-        }
+      .header-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+      }
 
-        .table-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 3px;
-        }
-    </style>
+      .controls {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .actions {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      th,
+      td {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+      }
+    }
+
+    /* Custom Scrollbar */
+    .table-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+      background: #F1F5F9;
+      border-radius: 10px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+    }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <div class="dashboard-header">
-            <div class="header-title">
-                <div class="header-icon">
-                    <i class="fas fa-dumbbell"></i>
-                </div>
-                <div class="title-text">
-                    <h2>GYM MEMBERS</h2>
-                    <span class="subtitle">Member Management Dashboard</span>
-                </div>
-                 <!-- Back to Home Button using an anchor tag with url_for -->
-                 <a href="{{ url_for('home') }}" class="btn back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    <span>Back</span>
-                </a>
-                
-                <style>
-                    .back-button {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                        font-size: 22px;
-                        font-weight: bold;
-                        padding: 12px 20px;
-                        border-radius: 30px;
-                        text-decoration: none;
-                        background: linear-gradient(135deg, #6a11cb, #2575fc);
-                        color: white;
-                        transition: 0.3s ease;
-                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-                    }
-                
-                    .back-button i {
-                        font-size: 26px;
-                    }
-                
-                    .back-button:hover {
-                        transform: scale(1.1);
-                        background: linear-gradient(135deg, #2575fc, #6a11cb);
-                        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-                    }
-                </style>
-                
-                 
-            </div>
-        </div>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Member ID</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Membership</th>
-                        <th>Joined Date</th>
-                        <th>Period</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for member in members %}
-                    <tr>
-                        <td>{{loop.index}}</td>
-                        <td>{{ member.member_id }}</td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <span class="status-indicator" style="background: #10B981;"></span>
-                                {{ member.name }}
-                            </div>
-                        </td>
-                        <td>{{ member.age }}</td>
-                        <td>
-                            <span class="membership-badge {{ member.membership_type.lower() }}">
-                                {% if member.membership_type.lower() == 'basic' %}
-                                    <i class="fas fa-dumbbell"></i>
-                                {% elif member.membership_type.lower() == 'premium' %}
-                                    <i class="fas fa-bolt"></i>
-                                {% elif member.membership_type.lower() == 'platinum' %}
-                                    <i class="fas fa-gem"></i>
-                                {% elif member.membership_type.lower() == 'gold' %}
-                                    <i class="fas fa-crown"></i>
-                                {% elif member.membership_type.lower() == 'vip' %}
-                                    <i class="fas fa-trophy"></i>
-                                {% endif %}
-                                {{ member.membership_type }}
-                            </span>
-                        </td>
-                        <td>{{ member.date_of_joining }}</td>
-                        <td>{{ member.pricing_period or 'N/A' }}</td>
-                        <td>₹{{ member.pricing_amount or 'N/A' }}</td>
-                        <td>
-                            <div class="actions">
-                                <div class="action-btn view-btn" onclick="viewMember('{{ member.member_id }}')">
-                                    <i class="fas fa-eye"></i>
-                                </div>
-                                <div class="action-btn edit-btn" onclick="editMember('{{ member.member_id }}')">
-                                    <i class="fas fa-pen"></i>
-                                </div>
-                                <div class="action-btn delete-btn" onclick="deleteMember('{{ member.member_id }}')">
-                                    <i class="fas fa-trash"></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% if not members %}
-                    <tr>
-                        <td colspan="9" class="empty-row">
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <i class="fas fa-users-slash"></i>
-                                <span>No members found</span>
-                                <span style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
-                                    Add new members to see them listed here
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+<body>
+  <div class="container">
+    <div class="dashboard-header">
+      <div class="header-title">
+        <div class="header-icon">
+          <i class="fas fa-dumbbell"></i>
         </div>
+        <div class="title-text">
+          <h2>GYM MEMBERS</h2>
+          <span class="subtitle">Member Management Dashboard</span>
+        </div>
+        <a href="{{ url_for('home') }}" class="back-button">
+          <i class="fas fa-arrow-left"></i>
+          <span>Back</span>
+        </a>
+        </a>
+      </div>
     </div>
 
-    <script>
-        // Toast notification function
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                padding: 1rem 1.5rem;
-                border-radius: 10px;
-                color: white;
-                font-weight: 500;
-                z-index: 1000;
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                           0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            `;
+    <!-- Controls: Search, Filter & Sort -->
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search by name..." />
+      <select id="filterMembership">
+        <option value="">Filter by Membership</option>
+        <option value="basic">Basic</option>
+        <option value="premium">Premium</option>
+        <option value="gold">Gold</option>
+        <option value="platinum">Platinum</option>
+        <option value="vip">VIP</option>
+      </select>
+      <select id="sortBy">
+        <option value="">Sort by</option>
+        <option value="name">Name</option>
+        <option value="age">Age</option>
+        <option value="date_of_joining">Joined Date</option>
+        <option value="amount">Amount</option>
+        <option value="period">Period</option>
+      </select>
+    </div>
 
-            const icon = document.createElement('i');
-            
-            if (type === 'success') {
-                toast.style.background = 'linear-gradient(135deg, #10B981, #059669)';
-                icon.className = 'fas fa-check-circle';
-            } else if (type === 'error') {
-                toast.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
-                icon.className = 'fas fa-exclamation-circle';
-            }
-
-            toast.appendChild(icon);
-            toast.appendChild(document.createTextNode(message));
-            document.body.appendChild(toast);
-
-            // Trigger animation
-            setTimeout(() => {
-                toast.style.opacity = '1';
-                toast.style.transform = 'translateY(0)';
-            }, 100);
-
-            // Remove toast after 3 seconds
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 300);
-            }, 3000);
-        }
-
-        // View member function
-        function viewMember(memberId) {
-            window.location.href = `/member/view/${memberId}`;
-        }
-
-        // Edit member function
-        function editMember(memberId) {
-            window.location.href = `/member/edit/${memberId}`;
-        }
-
-        // Delete member function with confirmation
-        function deleteMember(memberId) {
-            const confirmDialog = document.createElement('div');
-            confirmDialog.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 1000;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            `;
-
-            const dialogContent = document.createElement('div');
-            dialogContent.style.cssText = `
-                background: white;
-                padding: 2rem;
-                border-radius: 1rem;
-                max-width: 400px;
-                width: 90%;
-                transform: translateY(-20px);
-                transition: transform 0.3s ease;
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            `;
-
-            dialogContent.innerHTML = `
-                <h3 style="margin: 0 0 1rem; color: var(--text-primary);">Confirm Deletion</h3>
-                <p style="margin: 0 0 1.5rem; color: var(--text-secondary);">
-                    Are you sure you want to delete member ${memberId}? 
-                </p>
-                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button id="cancelBtn" style="
-                        padding: 0.5rem 1rem;
-                        border: none;
-                        border-radius: 0.5rem;
-                        background: #E5E7EB;
-                        color: var(--text-primary);
-                        cursor: pointer;
-                        font-weight: 500;
-                        transition: all 0.3s ease;
-                    ">Cancel</button>
-                    <button id="deleteBtn" style="
-                        padding: 0.5rem 1rem;
-                        border: none;
-                        border-radius: 0.5rem;
-                        background: linear-gradient(135deg, #EF4444, #DC2626);
-                        color: white;
-                        cursor: pointer;
-                        font-weight: 500;
-                        transition: all 0.3s ease;
-                    ">Delete</button>
+    <div class="table-container">
+      <table id="membersTable">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Member ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Age</th>
+            <th>Membership</th>
+            <th>Joined Date</th>
+            <th>Period</th>
+            <th>Amount</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member in members %}
+          <tr data-membership="{{ member.membership_type | lower }}" data-name="{{ member.name }}"
+            data-age="{{ member.age }}" data-joined="{{ member.date_of_joining }}"
+            data-amount="{{ member.pricing_amount or 0 }}" data-period="{{ member.pricing_period or '' }}">
+            <td>{{ loop.index }}</td>
+            <td>{{ member.member_id }}</td>
+            <td>{{ member.name }}</td>
+            <td class="email-cell" title="{{ member.email }}">{{ member.email }}</td>
+            <td class="address-cell" title="{{ member.address }}">{{ member.address }}</td>
+            <td>{{ member.age }}</td>
+            <td>
+              <span class="membership-badge {{ member.membership_type | lower }}">
+                {% if member.membership_type | lower == 'basic' %}
+                <i class="fas fa-dumbbell"></i>
+                {% elif member.membership_type | lower == 'premium' %}
+                <i class="fas fa-bolt"></i>
+                {% elif member.membership_type | lower == 'platinum' %}
+                <i class="fas fa-gem"></i>
+                {% elif member.membership_type | lower == 'gold' %}
+                <i class="fas fa-crown"></i>
+                {% elif member.membership_type | lower == 'vip' %}
+                <i class="fas fa-trophy"></i>
+                {% endif %}
+                {{ member.membership_type }}
+              </span>
+            </td>
+            <td>{{ member.date_of_joining }}</td>
+            <td>{{ member.pricing_period or 'N/A' }}</td>
+            <td>₹{{ member.pricing_amount or 'N/A' }}</td>
+            <td>
+              <div class="actions">
+                <div class="action-btn view-btn" onclick="viewMember('{{ member.member_id }}')">
+                  <i class="fas fa-eye"></i>
                 </div>
-            `;
+                <div class="action-btn edit-btn" onclick="editMember('{{ member.member_id }}')">
+                  <i class="fas fa-pen"></i>
+                </div>
+                <div class="action-btn delete-btn" onclick="deleteMember('{{ member.member_id }}')">
+                  <i class="fas fa-trash"></i>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          {% if not members %}
+          <tr>
+            <td colspan="11" class="empty-row">
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <i class="fas fa-users-slash"></i>
+                <span>No members found</span>
+                <span style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                  Add new members to see them listed here
+                </span>
+              </div>
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-            confirmDialog.appendChild(dialogContent);
-            document.body.appendChild(confirmDialog);
-
-            // Show dialog with animation
-            setTimeout(() => {
-                confirmDialog.style.opacity = '1';
-                dialogContent.style.transform = 'translateY(0)';
-            }, 100);
-
-            // Handle button clicks
-            document.getElementById('cancelBtn').onclick = () => {
-                closeDialog();
-            };
-
-            document.getElementById('deleteBtn').onclick = () => {
-                closeDialog();
-                performDelete(memberId);
-            };
-
-            function closeDialog() {
-                confirmDialog.style.opacity = '0';
-                dialogContent.style.transform = 'translateY(-20px)';
-                setTimeout(() => {
-                    document.body.removeChild(confirmDialog);
-                }, 300);
-            }
+  <script>
+    // Search filter function
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll('#membersTable tbody tr').forEach(row => {
+        const name = row.getAttribute('data-name').toLowerCase();
+        if (name.includes(query)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
         }
+      });
+    });
 
-        // Perform delete operation
-        function performDelete(memberId) {
-            fetch(`/member/delete/${memberId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => {
-                if (response.ok) {
-                    showToast('Member deleted successfully!', 'success');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    showToast('Failed to delete member. Please try again.', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showToast('An error occurred while deleting the member.', 'error');
-            });
+    // Filter function
+    document.getElementById('filterMembership').addEventListener('change', function () {
+      const filterValue = this.value;
+      document.querySelectorAll('#membersTable tbody tr').forEach(row => {
+        const membership = row.getAttribute('data-membership');
+        if (filterValue === '' || membership === filterValue) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
         }
+      });
+    });
 
-        // Add hover effect to table rows
-        document.querySelectorAll('tbody tr').forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                row.style.transform = 'scale(1.01)';
-                row.style.transition = 'transform 0.3s ease';
-            });
+    // Sort function
+    document.getElementById('sortBy').addEventListener('change', function () {
+      const sortBy = this.value;
+      const tbody = document.querySelector('#membersTable tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
 
-            row.addEventListener('mouseleave', () => {
-                row.style.transform = 'scale(1)';
-            });
+      rows.sort((a, b) => {
+        if (sortBy === 'name') {
+          return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+        } else if (sortBy === 'age') {
+          return parseInt(a.getAttribute('data-age')) - parseInt(b.getAttribute('data-age'));
+        } else if (sortBy === 'date_of_joining') {
+          return new Date(a.getAttribute('data-joined')) - new Date(b.getAttribute('data-joined'));
+        } else if (sortBy === 'amount') {
+          return parseInt(a.getAttribute('data-amount')) - parseInt(b.getAttribute('data-amount'));
+        } else if (sortBy === 'period') {
+          return a.getAttribute('data-period').localeCompare(b.getAttribute('data-period'));
+        }
+        return 0;
+      });
+
+      // Append sorted rows
+      rows.forEach(row => tbody.appendChild(row));
+    });
+
+    // Toast notification function
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                   0 10px 15px rgba(0, 0, 0, 0.1);
+      `;
+      const icon = document.createElement('i');
+      if (type === 'success') {
+        toast.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+        icon.className = 'fas fa-check-circle';
+      } else if (type === 'error') {
+        toast.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+        icon.className = 'fas fa-exclamation-circle';
+      }
+      toast.appendChild(icon);
+      toast.appendChild(document.createTextNode(message));
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+      }, 100);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+
+    // View member function
+    function viewMember(memberId) {
+      window.location.href = `/member/view/${memberId}`;
+    }
+
+    // Edit member function
+    function editMember(memberId) {
+      window.location.href = `/member/edit/${memberId}`;
+    }
+
+    // Delete member function with confirmation
+    function deleteMember(memberId) {
+      const confirmDialog = document.createElement('div');
+      confirmDialog.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      `;
+      const dialogContent = document.createElement('div');
+      dialogContent.style.cssText = `
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        max-width: 400px;
+        width: 90%;
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      `;
+      dialogContent.innerHTML = `
+        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Confirm Deletion</h3>
+        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+          Are you sure you want to delete member ${memberId}?
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+          <button id="cancelBtn" style="
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: #E5E7EB;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+          ">Cancel</button>
+          <button id="deleteBtn" style="
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+          ">Delete</button>
+        </div>
+      `;
+      confirmDialog.appendChild(dialogContent);
+      document.body.appendChild(confirmDialog);
+      setTimeout(() => {
+        confirmDialog.style.opacity = '1';
+        dialogContent.style.transform = 'translateY(0)';
+      }, 100);
+      document.getElementById('cancelBtn').onclick = () => { closeDialog(); };
+      document.getElementById('deleteBtn').onclick = () => { closeDialog(); performDelete(memberId); };
+      function closeDialog() {
+        confirmDialog.style.opacity = '0';
+        dialogContent.style.transform = 'translateY(-20px)';
+        setTimeout(() => { document.body.removeChild(confirmDialog); }, 300);
+      }
+    }
+
+    function performDelete(memberId) {
+      fetch(`/member/delete/${memberId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then(response => {
+          if (response.ok) {
+            showToast('Member deleted successfully!', 'success');
+            setTimeout(() => { window.location.reload(); }, 1000);
+          } else {
+            showToast('Failed to delete member. Please try again.', 'error');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showToast('An error occurred while deleting the member.', 'error');
         });
-    </script>
+    }
+
+    document.querySelectorAll('tbody tr').forEach(row => {
+      row.addEventListener('mouseenter', () => {
+        row.style.transform = 'scale(1.01)';
+        row.style.transition = 'transform 0.3s ease';
+      });
+      row.addEventListener('mouseleave', () => {
+        row.style.transform = 'scale(1)';
+      });
+    });
+
+  </script>
+
 </body>
+
 </html>

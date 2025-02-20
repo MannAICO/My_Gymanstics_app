@@ -189,7 +189,15 @@
 
                     <div class="info-item">
                         <div class="info-label">Membership Fee</div>
-                        <div class="info-value">${{ member.pricing_amount }}</div>
+                        <div class="info-value"> ₹{{ member.pricing_amount }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email ID</div>
+                        <div class="info-value"> {{ member.email }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Address</div>
+                        <div class="info-value"> {{ member.address }}</div>
                     </div>
                 </div>
 
@@ -198,6 +206,7 @@
                         Back to Members List
                     </a>
                 </div>
+                
             </div>
         </div>
     </div>

@@ -2,308 +2,281 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advanced Gym Reports</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
     
     :root {
-      --primary: #4f46e5;
-      --primary-light: #6366f1;
-      --secondary: #0ea5e9;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #f8fafc;
-      --text-secondary: #94a3b8;
-      --border: #334155;
+      --primary: #3B82F6;
+      --primary-dark: #1D4ED8;
+      --secondary: #64748B;
+      --success: #10B981;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      --bg: #F8FAFC;
+      --card: #ffffff;
+      --text: #1E293B;
+      --text-secondary: #475569;
+      --border: #E2E8F0;
+      --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
     }
-
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Outfit', sans-serif;
     }
-
+    
     body {
       background: var(--bg);
-      min-height: 100vh;
       color: var(--text);
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 25% 25%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(14, 165, 233, 0.15) 0%, transparent 50%);
+      min-height: 100vh;
+      padding: 1rem;
+      background-image:
+        radial-gradient(circle at 25% 25%, rgba(59,130,246,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(37,99,235,0.15) 0%, transparent 50%);
       background-attachment: fixed;
     }
-
+    
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 1.5rem;
     }
-
+    
+    /* Header Section */
     .header {
-      position: relative;
-      padding: 2rem;
-      margin-bottom: 2.5rem;
-      border-radius: 1rem;
       background: var(--card);
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
-
-    .header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        45deg,
-        transparent,
-        rgba(255, 255, 255, 0.05),
-        transparent
-      );
-      transform: rotate(45deg);
-      animation: shimmer 3s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%) rotate(45deg); }
-      100% { transform: translateX(100%) rotate(45deg); }
-    }
-
+    
     .header h1 {
-      font-size: 2.5rem;
-      background: linear-gradient(to right, var(--secondary), var(--primary-light));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 1rem;
-      position: relative;
-      display: inline-block;
+      font-size: 2rem;
       font-weight: 600;
+      color: var(--primary-dark);
     }
-
-    .header h1::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: -5px;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(to right, var(--secondary), var(--primary-light));
-      transform: scaleX(0);
-      transform-origin: left;
-      animation: underline 1s forwards;
-    }
-
-    @keyframes underline {
-      to { transform: scaleX(1); }
-    }
-
+    
     .controls {
       display: flex;
       gap: 1rem;
-      margin-bottom: 2rem;
       flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    
+    .controls input[type="text"],
+    .controls select {
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.9rem;
+      background: var(--card);
+      color: var(--text);
     }
     
     .btn {
-      padding: 0.875rem 1.75rem;
+      padding: 0.75rem 1.5rem;
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 4px;
       cursor: pointer;
       font-weight: 500;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      display: flex;
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      color: var(--card);
+      text-decoration: none;
+      display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
-      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: var(--shadow-sm);
     }
-
+    
     .btn:hover {
-      background: var(--primary-light);
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+      box-shadow: var(--shadow-md);
     }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 300%;
-      height: 300%;
-      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 50%);
-      transform: translate(-50%, -50%) scale(0);
-      transition: transform 0.5s;
+    
+    .back-button {
+      align-self: flex-end;
+      padding: 0.5rem 1rem;
+      background: var(--secondary);
+      color: var(--card);
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background 0.3s ease;
     }
-
-    .btn:hover::before {
-      transform: translate(-50%, -50%) scale(1);
+    .back-button:hover {
+      background: #475569;
     }
-
+    
+    /* Table Styles */
     .table-wrapper {
       background: var(--card);
-      border-radius: 1rem;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      margin-bottom: 2.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
     }
-
-    .table-wrapper::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
-      pointer-events: none;
-    }
-
+    
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 1000px;
     }
-
+    
     th {
-      background: rgba(255,255,255,0.05);
-      padding: 1.25rem 1rem;
+      padding: 0.75rem 1.5rem;
       text-align: left;
       font-weight: 600;
-      position: relative;
-      color: var(--secondary);
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid var(--border);
     }
-
-    th::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), transparent);
-    }
-
+    
     td {
-      padding: 1.25rem 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 0.9rem;
     }
-
-    tr {
-      transition: all 0.3s ease;
-      position: relative;
+    
+    tr:hover td {
+      background: var(--bg);
+      transition: background 0.3s ease;
     }
-
-    tr:hover {
-      background: rgba(255,255,255,0.03);
-      transform: scale(1.01);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      z-index: 1;
-    }
-
-    .status-badge {
+    
+    .membership-badge {
+      padding: 0.5rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      padding: 0.35rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      background: rgba(16, 185, 129, 0.1);
-      color: #10b981;
+      gap: 0.5rem;
+      color: var(--card);
     }
-
-    .status-badge i {
-      font-size: 0.625rem;
+    
+    .vip { background: var(--danger); }
+    .gold { background: var(--warning); }
+    .platinum { background: var(--border); color: var(--text); }
+    .premium { background: var(--primary); }
+    .basic { background: var(--secondary); }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
     }
-
+    
+    .action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: var(--secondary);
+      color: var(--card);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .action-btn:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .view-btn { background: var(--success); }
+    .edit-btn { background: #10B981; }
+    .delete-btn { background: var(--danger); }
+    
+    /* Chart Section */
     .chart-section {
-      display: none;
       background: var(--card);
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      margin-top: 2.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      margin-top: 1.5rem;
+      display: none;
       opacity: 0;
       transform: translateY(20px);
+      transition: all 0.5s ease;
     }
-
+    
     .chart-section.visible {
       display: block;
       opacity: 1;
       transform: translateY(0);
     }
-
+    
     .chart-tabs {
       display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
       overflow-x: auto;
       padding-bottom: 0.5rem;
       scrollbar-width: thin;
-      scrollbar-color: var(--primary) var(--card);
+      scrollbar-color: var(--primary) var(--border);
     }
-
+    
     .chart-tabs::-webkit-scrollbar {
       height: 6px;
     }
-
+    
     .chart-tabs::-webkit-scrollbar-track {
-      background: var(--card);
+      background: var(--border);
       border-radius: 3px;
     }
-
+    
     .chart-tabs::-webkit-scrollbar-thumb {
       background-color: var(--primary);
       border-radius: 3px;
     }
-
+    
     .chart-tab {
-      padding: 0.75rem 1.5rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.75rem 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 0.5rem;
       cursor: pointer;
-      transition: all 0.3s ease;
       color: var(--text-secondary);
       white-space: nowrap;
+      transition: all 0.3s ease;
     }
-
+    
     .chart-tab:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateY(-2px);
+      background: rgba(59,130,246,0.05);
+      border-color: var(--primary);
     }
-
+    
     .chart-tab.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
-      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+      box-shadow: var(--shadow-sm);
     }
-
+    
     #mainChart {
       max-width: 100%;
       height: 400px !important;
     }
-
+    
     .empty-state {
       display: flex;
       flex-direction: column;
@@ -312,138 +285,143 @@
       padding: 4rem 2rem;
       text-align: center;
     }
-
+    
     .empty-state i {
       font-size: 3rem;
       color: var(--text-secondary);
       margin-bottom: 1rem;
     }
-
+    
     .empty-state h2 {
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
       color: var(--text);
     }
-
+    
     .empty-state p {
       color: var(--text-secondary);
     }
-
-    @media (max-width: 768px) {
-      .header h1 {
-        font-size: 1.75rem;
-      }
-      
-      .table-wrapper {
-        overflow-x: auto;
-      }
-      
-      .controls {
-        flex-direction: column;
-        width: 100%;
-      }
-      
-      .btn {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      .chart-tabs {
-        padding-bottom: 1rem;
-      }
-
-      th, td {
-        padding: 1rem 0.75rem;
-      }
-
-      .status-badge {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-      }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      table { min-width: 100%; }
+      th, td { padding: 0.75rem 1rem; font-size: 0.8rem; }
+      .action-btn { width: 28px; height: 28px; }
     }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 1rem;
-      }
-      
-      .header {
-        padding: 1.5rem;
-      }
-      
-      .header h1 {
-        font-size: 1.5rem;
-      }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.5rem; }
+      .controls { flex-direction: column; gap: 0.5rem; }
+      .chart-tabs { padding-bottom: 1rem; }
+      th, td { font-size: 0.75rem; padding: 0.5rem; }
+    }
+    
+    /* Custom Scrollbar */
+    .table-wrapper::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #F1F5F9;
+      border-radius: 3px;
+    }
+    
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 3px;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Header Section -->
     <header class="header">
       <h1>Advanced Gym Analytics</h1>
       <div class="controls">
         <button class="btn" onclick="toggleCharts()">
-          <i class="fas fa-chart-line"></i>
-          Analytics Dashboard
+          <i class="fas fa-chart-line"></i> Analytics Dashboard
         </button>
-        <!-- Export CSV Button -->
         <button class="btn" onclick="exportCSV()">
-          <i class="fas fa-file-csv"></i>
-          Export CSV
+          <i class="fas fa-file-csv"></i> Export CSV
         </button>
-        <!-- Back to Home Button using an anchor tag with url_for -->
-        <a href="{{ url_for('home') }}" class="btn btn-secondary">
+        <a href="javascript:window.history.back()" class="btn">
           <i class="fas fa-home"></i> Home
-      </a>      
+        </a>
       </div>
     </header>
 
+    <!-- Controls: Search, Filter, and Sort -->
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search by name..." style="flex:1;">
+      <select id="filterMembership">
+        <option value="">Filter by Membership</option>
+        <option value="basic">Basic</option>
+        <option value="premium">Premium</option>
+        <option value="gold">Gold</option>
+        <option value="platinum">Platinum</option>
+        <option value="vip">VIP</option>
+      </select>
+      <select id="sortBy">
+        <option value="">Sort by</option>
+        <option value="name">Name</option>
+        <option value="age">Age</option>
+        <option value="date_of_joining">Joined Date</option>
+        <option value="amount">Amount</option>
+        <option value="period">Period</option>
+      </select>
+    </div>
+
+    <!-- Table Section -->
     <div class="table-wrapper">
-      {% if members %}
-      <table>
+      <table id="membersTable">
         <thead>
           <tr>
             <th>S.No</th>
             <th>Member ID</th>
             <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
             <th>Age</th>
             <th>Membership</th>
-            <th>Pricing Period</th>
-            <th>Pricing Amount</th>
-            <th>Status</th>
             <th>Joined Date</th>
+            <th>Period</th>
+            <th>Amount</th>
           </tr>
         </thead>
         <tbody>
           {% for member in members %}
-          <tr class="member-row" data-id="{{ member.member_id }}">
+          <tr data-name="{{ member.name | lower }}"
+              data-age="{{ member.age }}"
+              data-joined="{{ member.date_of_joining }}"
+              data-amount="{{ member.pricing_amount or 0 }}"
+              data-period="{{ member.pricing_period | lower }}"
+              data-membership="{{ member.membership_type | lower }}">
             <td>{{ loop.index }}</td>
             <td>{{ member.member_id }}</td>
             <td>{{ member.name }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.address }}</td>
             <td>{{ member.age }}</td>
             <td>{{ member.membership_type }}</td>
+            <td>{{ member.date_of_joining }}</td>
             <td>{{ member.pricing_period or 'N/A' }}</td>
             <td>₹{{ member.pricing_amount or 'N/A' }}</td>
-            <td>
-              <span class="status-badge status-active">
-                <i class="fas fa-circle"></i>
-                Active
-              </span>
-            </td>
-            <td>{{ member.date_of_joining }}</td>
           </tr>
           {% endfor %}
+          {% if not members %}
+          <tr>
+            <td colspan="10" class="empty-state">
+              <i class="fas fa-users-slash"></i>
+              <h2>No Members Found</h2>
+              <p>Add new members to see them listed here.</p>
+            </td>
+          </tr>
+          {% endif %}
         </tbody>
       </table>
-      {% else %}
-      <div class="empty-state">
-        <i class="fas fa-users"></i>
-        <h2>No Members Found</h2>
-        <p>Start by adding new members to the system.</p>
-      </div>
-      {% endif %}
     </div>
 
+    <!-- Chart Section -->
     <div class="chart-section" id="chartSection">
       <div class="chart-tabs">
         <button class="chart-tab active" onclick="switchChart('membership')">Membership Distribution</button>
@@ -458,49 +436,56 @@
 
   <script>
     // GSAP Animations
-    gsap.from(".header", {
-      duration: 1,
-      y: -50,
-      opacity: 0,
-      ease: "power3.out"
+    gsap.from(".header", { duration: 1, y: -50, opacity: 0, ease: "power3.out" });
+    gsap.from(".table-wrapper", { duration: 1, y: 50, opacity: 0, delay: 0.3, ease: "power3.out" });
+
+    // Search filter
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll('#membersTable tbody tr').forEach(row => {
+        const name = row.getAttribute('data-name');
+        row.style.display = name.includes(query) ? '' : 'none';
+      });
     });
 
-    gsap.from(".table-wrapper", {
-      duration: 1,
-      y: 50,
-      opacity: 0,
-      delay: 0.3,
-      ease: "power3.out"
+    // Filter by Membership
+    document.getElementById('filterMembership').addEventListener('change', function() {
+      const filterValue = this.value;
+      document.querySelectorAll('#membersTable tbody tr').forEach(row => {
+        const membership = row.getAttribute('data-membership');
+        row.style.display = (filterValue === '' || membership === filterValue) ? '' : 'none';
+      });
     });
 
-    // Row hover animation
-    document.querySelectorAll('.member-row').forEach(row => {
-      row.addEventListener('mouseenter', () => {
-        gsap.to(row, {
-          duration: 0.3,
-          backgroundColor: "rgba(255,255,255,0.05)",
-          scale: 1.01,
-          ease: "power2.out"
-        });
+    // Sort function
+    document.getElementById('sortBy').addEventListener('change', function() {
+      const sortBy = this.value;
+      const tbody = document.querySelector('#membersTable tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      
+      rows.sort((a, b) => {
+        if (sortBy === 'name') {
+          return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+        } else if (sortBy === 'age') {
+          return parseInt(a.getAttribute('data-age')) - parseInt(b.getAttribute('data-age'));
+        } else if (sortBy === 'date_of_joining') {
+          return new Date(a.getAttribute('data-joined')) - new Date(b.getAttribute('data-joined'));
+        } else if (sortBy === 'amount') {
+          return parseInt(a.getAttribute('data-amount')) - parseInt(b.getAttribute('data-amount'));
+        } else if (sortBy === 'period') {
+          return a.getAttribute('data-period').localeCompare(b.getAttribute('data-period'));
+        }
+        return 0;
       });
-
-      row.addEventListener('mouseleave', () => {
-        gsap.to(row, {
-          duration: 0.3,
-          backgroundColor: "transparent",
-          scale: 1,
-          ease: "power2.out"
-        });
-      });
+      
+      rows.forEach(row => tbody.appendChild(row));
     });
 
     // Chart functionality
     let currentChart = null;
-
     function toggleCharts() {
       const section = document.getElementById('chartSection');
       const isVisible = section.classList.contains('visible');
-      
       if (!isVisible) {
         section.style.display = 'block';
         setTimeout(() => {
@@ -509,65 +494,36 @@
         }, 50);
       } else {
         section.classList.remove('visible');
-        setTimeout(() => {
-          section.style.display = 'none';
-        }, 500);
+        setTimeout(() => { section.style.display = 'none'; }, 500);
       }
     }
 
     function switchChart(type) {
-      document.querySelectorAll('.chart-tab').forEach(tab => {
-        tab.classList.remove('active');
-      });
+      document.querySelectorAll('.chart-tab').forEach(tab => tab.classList.remove('active'));
       document.querySelector(`.chart-tab[onclick="switchChart('${type}')"]`).classList.add('active');
       showChart(type);
     }
 
     function showChart(type) {
-      if (currentChart) {
-        currentChart.destroy();
-      }
-
+      if (currentChart) { currentChart.destroy(); }
       const ctx = document.getElementById('mainChart').getContext('2d');
       let data, options;
-
-      switch(type) {
+      switch (type) {
         case 'membership':
           data = {
-            labels: ['Basic', 'Premium', 'Gold', 'Platinum'],
+            labels: ['Basic', 'Premium', 'Gold', 'Platinum', 'VIP'],
             datasets: [{
               label: 'Members',
-              data: [30, 45, 25, 15],
-              backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
+              data: [30, 45, 25, 15, 10],
+              backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'],
               borderWidth: 0,
               borderRadius: 5
             }]
           };
           options = {
             plugins: {
-              legend: {
-                display: true,
-                position: 'right',
-                labels: {
-                  color: '#f8fafc',
-                  padding: 20,
-                  font: {
-                    family: "'Poppins', sans-serif",
-                    size: 12
-                  }
-                }
-              },
-              tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#f8fafc',
-                bodyColor: '#f8fafc',
-                bodyFont: {
-                  family: "'Poppins', sans-serif"
-                },
-                padding: 12,
-                cornerRadius: 8,
-                boxPadding: 6
-              }
+              legend: { display: true, position: 'right', labels: { color: '#f8fafc', padding: 20, font: { family: "'Poppins', sans-serif", size: 12 } } },
+              tooltip: { backgroundColor: '#1e293b', titleColor: '#f8fafc', bodyColor: '#f8fafc', bodyFont: { family: "'Poppins', sans-serif" }, padding: 12, cornerRadius: 8, boxPadding: 6 }
             },
             responsive: true,
             maintainAspectRatio: false
@@ -586,29 +542,8 @@
           };
           options = {
             plugins: {
-              legend: {
-                display: true,
-                position: 'right',
-                labels: {
-                  color: '#f8fafc',
-                  padding: 20,
-                  font: {
-                    family: "'Poppins', sans-serif",
-                    size: 12
-                  }
-                }
-              },
-              tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#f8fafc',
-                bodyColor: '#f8fafc',
-                bodyFont: {
-                  family: "'Poppins', sans-serif"
-                },
-                padding: 12,
-                cornerRadius: 8,
-                boxPadding: 6
-              }
+              legend: { display: true, position: 'right', labels: { color: '#f8fafc', padding: 20, font: { family: "'Poppins', sans-serif", size: 12 } } },
+              tooltip: { backgroundColor: '#1e293b', titleColor: '#f8fafc', bodyColor: '#f8fafc', bodyFont: { family: "'Poppins', sans-serif" }, padding: 12, cornerRadius: 8, boxPadding: 6 }
             },
             responsive: true,
             maintainAspectRatio: false
@@ -620,12 +555,10 @@
             datasets: [{
               label: 'Weekly Attendance',
               data: [65, 75, 70, 80, 85, 45, 40],
-              borderColor: '#4f46e5',
-              backgroundColor: 'rgba(79, 70, 229, 0.2)',
-              pointBackgroundColor: '#4f46e5',
-              pointBorderColor: '#ffffff',
-              pointHoverBackgroundColor: '#ffffff',
-              pointHoverBorderColor: '#4f46e5',
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59,130,246,0.2)',
+              pointBackgroundColor: '#3b82f6',
+              pointBorderColor: '#fff',
               tension: 0.4,
               fill: true
             }]
@@ -634,87 +567,40 @@
             scales: {
               y: {
                 beginAtZero: true,
-                grid: {
-                  color: 'rgba(255, 255, 255, 0.05)'
-                },
-                ticks: {
-                  color: '#94a3b8',
-                  font: {
-                    family: "'Poppins', sans-serif"
-                  }
-                }
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#94a3b8', font: { family: "'Poppins', sans-serif" } }
               },
               x: {
-                grid: {
-                  color: 'rgba(255, 255, 255, 0.05)'
-                },
-                ticks: {
-                  color: '#94a3b8',
-                  font: {
-                    family: "'Poppins', sans-serif"
-                  }
-                }
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#94a3b8', font: { family: "'Poppins', sans-serif" } }
               }
             },
             plugins: {
-              legend: {
-                labels: {
-                  color: '#f8fafc',
-                  font: {
-                    family: "'Poppins', sans-serif",
-                    size: 12
-                  }
-                }
-              },
-              tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#f8fafc',
-                bodyColor: '#f8fafc',
-                bodyFont: {
-                  family: "'Poppins', sans-serif"
-                },
-                padding: 12,
-                cornerRadius: 8,
-                boxPadding: 6
-              }
+              legend: { labels: { color: '#f8fafc', font: { family: "'Poppins', sans-serif", size: 12 } } },
+              tooltip: { backgroundColor: '#1e293b', titleColor: '#f8fafc', bodyColor: '#f8fafc', bodyFont: { family: "'Poppins', sans-serif" }, padding: 12, cornerRadius: 8, boxPadding: 6 }
             },
             responsive: true,
             maintainAspectRatio: false
           };
           break;
       }
-
       const chartType = (type === 'attendance') ? 'line' : 'doughnut';
-      currentChart = new Chart(ctx, {
-        type: chartType,
-        data: data,
-        options: options || {}
-      });
+      currentChart = new Chart(ctx, { type: chartType, data: data, options: options || {} });
     }
 
     // Export CSV Functionality
     function exportCSV() {
       const table = document.querySelector('.table-wrapper table');
-      if (!table) {
-        alert('No data available to export.');
-        return;
-      }
-      
+      if (!table) { alert('No data available to export.'); return; }
       let csv = [];
       const headers = [];
-      table.querySelectorAll('thead tr th').forEach(th => {
-        headers.push(th.innerText.trim());
-      });
+      table.querySelectorAll('thead tr th').forEach(th => { headers.push(th.innerText.trim()); });
       csv.push(headers.join(','));
-      
       table.querySelectorAll('tbody tr').forEach(tr => {
         const row = [];
-        tr.querySelectorAll('td').forEach(td => {
-          row.push('"' + td.innerText.trim().replace(/"/g, '""') + '"');
-        });
+        tr.querySelectorAll('td').forEach(td => { row.push('"' + td.innerText.trim().replace(/"/g, '""') + '"'); });
         csv.push(row.join(','));
       });
-      
       const csvString = csv.join('\n');
       const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -728,18 +614,14 @@
     }
 
     function checkMobile() {
-      if (window.innerWidth <= 768) {
-        if (currentChart) {
-          if (currentChart.config.type === 'doughnut') {
-            currentChart.options.plugins.legend.position = 'bottom';
-          }
-          currentChart.update();
+      if (window.innerWidth <= 768 && currentChart) {
+        if (currentChart.config.type === 'doughnut') {
+          currentChart.options.plugins.legend.position = 'bottom';
         }
+        currentChart.update();
       }
     }
-
     window.addEventListener('resize', checkMobile);
-    
     checkMobile();
   </script>
 </body>

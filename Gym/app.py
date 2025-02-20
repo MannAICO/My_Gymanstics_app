@@ -2,7 +2,7 @@ import json
 import os
 import csv
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file, get_flashed_messages, abort, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify, session
 from werkzeug.utils import secure_filename
 from email.message import EmailMessage
 from reportlab.lib.pagesizes import letter
@@ -22,21 +22,20 @@ MEMBERS_FILE = "members.json"
 ATTENDANCE_FILE = "attendance.json"
 BILLING_FILE = "billing.json"
 MEMBERS_CSV = os.path.join(os.path.dirname(__file__), "members.csv")
-INVOICES_FILE = "invoices.json"  # New file for saving invoices
+INVOICES_FILE = "invoices.json"  # File for saving invoices
 
 # Ensure the CSV file exists (create with header if necessary)
 if not os.path.exists(MEMBERS_CSV):
     with open(MEMBERS_CSV, 'w', newline='') as csvfile:
-        fieldnames = ["member_id", "name", "age", "membership_type", "date_of_joining", "pricing_period", "pricing_amount"]
+        fieldnames = ["member_id", "name", "age", "membership_type", "date_of_joining", "pricing_period", "pricing_amount", "email", "address"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
-
 
 # --------------------------
 # Data Model Classes
 # --------------------------
 class Member:
-    def __init__(self, member_id, name, age, membership_type, date_of_joining, pricing_period, pricing_amount, next_renewal_date=None):
+    def __init__(self, member_id, name, age, membership_type, date_of_joining, pricing_period, pricing_amount, email, address, next_renewal_date=None):
         self.member_id = member_id
         self.name = name
         self.age = age
@@ -44,6 +43,8 @@ class Member:
         self.date_of_joining = date_of_joining
         self.pricing_period = pricing_period
         self.pricing_amount = pricing_amount
+        self.email = email
+        self.address = address
 
     def to_dict(self):
         return {
@@ -54,6 +55,8 @@ class Member:
             "date_of_joining": self.date_of_joining,
             "pricing_period": self.pricing_period,
             "pricing_amount": self.pricing_amount,
+            "email": self.email,
+            "address": self.address,
         }
 
 class Attendance:
@@ -156,7 +159,7 @@ class GymManagementSystem:
     def save_member_to_csv(self, member_data):
         try:
             with open(MEMBERS_CSV, 'a', newline='') as csvfile:
-                fieldnames = ["member_id", "name", "age", "membership_type", "date_of_joining", "pricing_period", "pricing_amount"]
+                fieldnames = ["member_id", "name", "age", "membership_type", "date_of_joining", "pricing_period", "pricing_amount", "email", "address"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writerow(member_data)
         except Exception as e:
@@ -168,10 +171,10 @@ class GymManagementSystem:
         max_id = max(int(member_id) for member_id in self.members.keys())
         return str(max_id + 1)
 
-    def register_member(self, name, age, membership_type, date_of_joining, pricing_period, pricing_amount):
+    def register_member(self, name, age, membership_type, date_of_joining, pricing_period, pricing_amount, email, address):
         self.members = self.load_members()
         member_id = self.get_next_member_id()
-        member = Member(member_id, name, age, membership_type, date_of_joining, pricing_period, pricing_amount)
+        member = Member(member_id, name, age, membership_type, date_of_joining, pricing_period, pricing_amount, email, address)
         self.members[member_id] = member.to_dict()
         self.save_members()
         self.save_member_to_csv(member.to_dict())
@@ -215,7 +218,7 @@ class GymManagementSystem:
         max_id = max(inv["invoice_id"] for inv in self.invoices)
         return max_id + 1
 
-    # Updated generate_invoice method with payment_method
+    # Updated generate_invoice method with payment_method field
     def generate_invoice(self, member_id, amount, description="", due_date="", payment_method=""):
         if member_id in self.members:
             invoice = self.billing.generate_invoice(member_id, amount, description, due_date)
@@ -264,7 +267,7 @@ def generate_invoice_pdf(member_id, invoice_id, amount, description, due_date, f
     c.setFillColor(primary_color)
     c.rect(left_margin, height - top_margin - header_height, width - left_margin - right_margin, header_height, fill=1, stroke=0)
 
-    # Invoice Title
+    # Invoice Title on Header
     c.setFont("Helvetica-Bold", 32)
     c.setFillColor(colors.white)
     c.drawRightString(width - right_margin - 10, height - top_margin - 40, "INVOICE")
@@ -310,7 +313,7 @@ def generate_invoice_pdf(member_id, invoice_id, amount, description, due_date, f
 
     # Payment Status Section (Pending)
     status_top = breakdown_top - 90
-    c.setFillColor(secondary_color)
+    c.setFillColor(warning_color)
     c.rect(left_margin, status_top - 40, width - left_margin - right_margin, 40, fill=1, stroke=0)
     c.setFont("Helvetica-Bold", 14)
     c.setFillColor(colors.white)
@@ -341,10 +344,9 @@ def generate_invoice_pdf(member_id, invoice_id, amount, description, due_date, f
     c.save()
     print(f"PDF Invoice saved as {filename}")
 
-# Email sending function
 def send_email_with_invoice(receiver_email, subject, body, pdf_filename):
     sender_email = "mannmakwana2002@gmail.com"  
-    sender_password = "igbe tayd tgrb vymq"        
+    sender_password = "igbe tayd tgrb vymq"  # Replace with your app-specific password
 
     msg = EmailMessage()
     msg["Subject"] = subject
@@ -392,7 +394,10 @@ def register_member():
         membership_type = request.form['membership_type']
         pricing_period = request.form['pricing_period']
         pricing_amount = request.form['pricing_amount']
-        gym_system.register_member(name, age, membership_type, date_of_joining, pricing_period, pricing_amount)
+        email = request.form['email']              # New field
+        address = request.form['address']          # New field
+
+        gym_system.register_member(name, age, membership_type, date_of_joining, pricing_period, pricing_amount, email, address)
         flash('Member registered successfully!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html')
@@ -411,7 +416,6 @@ def mark_attendance():
             flash('❌ Invalid data. Please try again.', 'attendance')
         return redirect(url_for('mark_attendance'))
     
-    get_flashed_messages()  
     return render_template('attendance.html')
 
 @app.route('/attendance_report')
@@ -449,7 +453,9 @@ def delete_attendance():
         flash('No attendance data found to delete.', 'error')
     return redirect(url_for('mark_attendance'))
 
-# Invoice routes
+# --------------------------
+# Invoice Routes
+# --------------------------
 @app.route('/invoice', methods=['GET', 'POST'])
 def generate_invoice():
     if request.method == 'POST':
@@ -528,8 +534,74 @@ def mark_paid(invoice_id):
 
 @app.route('/past_invoices')
 def past_invoices():
-    invoices = gym_system.invoices
+    invoices = gym_system.invoices  # List of invoice dictionaries
+
+    # Retrieve query parameters
+    search_query = request.args.get('search', '').strip().lower()
+    sort_by = request.args.get('sort_by', '').strip()
+    filter_status = request.args.get('filter_status', '').strip()
+
+    # Debug: print received parameters
+    print("Received parameters:")
+    print("  search_query:", search_query)
+    print("  sort_by:", sort_by)
+    print("  filter_status:", filter_status)
+
+    # 1. Apply search filtering (member_id and description)
+    if search_query:
+        invoices = [
+            inv for inv in invoices 
+            if search_query in str(inv.get('member_id', '')).lower() or 
+               search_query in str(inv.get('description', '')).lower()
+        ]
+        print("After search filter, invoice count:", len(invoices))
+
+    # 2. Apply status filtering (case-insensitive)
+    if filter_status:
+        invoices = [
+            inv for inv in invoices 
+            if str(inv.get('status', '')).strip().lower() == filter_status.lower()
+        ]
+        print("After status filter, invoice count:", len(invoices))
+
+    # 3. Apply sorting
+    if sort_by:
+      try:
+        if sort_by == 'highest_amount':
+            # Sort descending by amount
+            invoices = sorted(invoices, key=lambda inv: float(inv.get('amount', 0)), reverse=True)
+        elif sort_by == 'lowest_amount':
+            # Sort ascending by amount
+            invoices = sorted(invoices, key=lambda inv: float(inv.get('amount', 0)))
+        elif sort_by == 'recent_first':
+            # Sort descending by date_issued (most recent first)
+            invoices = sorted(
+                invoices,
+                key=lambda inv: datetime.strptime(inv.get('date_issued', '1970-01-01'), "%Y-%m-%d"),
+                reverse=True
+            )
+        elif sort_by == 'date':
+            # Sort ascending by date_issued (oldest first)
+            invoices = sorted(
+                invoices,
+                key=lambda inv: datetime.strptime(inv.get('date_issued', '1970-01-01'), "%Y-%m-%d")
+            )
+        elif sort_by == 'member_id':
+            # Sort alphabetically by member_id
+            invoices = sorted(invoices, key=lambda inv: str(inv.get('member_id', '')).lower())
+        else:
+            invoices = sorted(invoices, key=lambda inv: str(inv.get(sort_by, '')).lower())
+        if invoices:
+            print("After sorting, first invoice:", invoices[0])
+      except Exception as e:
+        print("Error during sorting:", e)
+      except Exception as e:
+        print("Error during sorting:", e)
+
+
     return render_template('past_invoices.html', invoices=invoices)
+
+
 
 @app.route('/delete_invoice/<int:invoice_id>', methods=['POST'])
 def delete_invoice(invoice_id):
@@ -541,16 +613,17 @@ def delete_invoice(invoice_id):
         flash("Invoice not found.", "danger")
     return redirect(url_for('past_invoices'))
 
-# reports page 
+# --------------------------
+# Reports and Member Endpoints
+# --------------------------
 @app.route('/reports')
 def view_reports():
     members = gym_system.get_all_members()
     return render_template('reports.html', members=members)
-# member page
+
 @app.route('/members')
 def list_members():
     members = gym_system.get_all_members()
-    print(members)
     return render_template('members.html', members=members)
 
 @app.route('/member/view/<member_id>', methods=['GET'])
@@ -582,6 +655,10 @@ def edit_member(member_id):
             member["pricing_amount"] = data["pricing_amount"]
         if "date_of_joining" in data: 
             member["date_of_joining"] = data["date_of_joining"]
+        if "email" in data:
+            member["email"] = data["email"]
+        if "address" in data:
+            member["address"] = data["address"]
         gym_system.members[member_id] = member
         gym_system.save_members()
 
@@ -606,7 +683,7 @@ def delete_member(member_id):
 def export_members():
     members = gym_system.get_all_members()
     csv_string = StringIO()
-    fieldnames = ["member_id", "name", "age", "membership_type", "date_of_joining", "pricing_period", "pricing_amount", "next_renewal_date"]
+    fieldnames = ["member_id", "name", "age", "membership_type", "date_of_joining", "pricing_period", "pricing_amount", "email", "address"]
     writer = csv.DictWriter(csv_string, fieldnames=fieldnames)
     writer.writeheader()
     for member in members:
@@ -626,7 +703,7 @@ def export_members():
     )
 
 # --------------------------
-# AI / Dashboard / Personalized Recommendations Endpoints
+# Dashboard / AI Endpoints
 # --------------------------
 @app.route('/dashboard')
 def dashboard():

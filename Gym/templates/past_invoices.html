@@ -1,131 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Past Invoices</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <style>
-        .invoice-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .invoice-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .status-badge {
-            transition: all 0.3s;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Management</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+  <style>
+    .premium-gradient {
+      background: linear-gradient(125deg, #010110 0%, #1CB5E0 100%);
+    }
+    .grid-pattern {
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+    .glass-card {
+      background: rgba(23, 13, 13, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .hover-lift {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .hover-lift:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+    }
+  </style>
 </head>
 <body class="bg-gray-50">
-    <div class="max-w-full mx-auto px-4 py-4">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-bold text-gray-800">Past Invoices</h1>
-            <a href="{{ url_for('home') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
-                Back to Home
-            </a>
+  <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+    <div class="max-w-7xl mx-auto px-6 py-12">
+      <a href="{{ url_for('home') }}" class="px-6 py-3 bg-white bg-opacity-10 hover:bg-opacity-20 border border-white rounded-xl text-white font-medium transition duration-300">
+        Return to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 mt-8">
+    <!-- Advanced Search -->
+    <div class="glass-card rounded-2xl shadow-xl p-8 mb-12">
+      <form action="{{ url_for('past_invoices') }}" method="get" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="md:col-span-5">
+          <input 
+            type="text" 
+            name="search" 
+            placeholder="Search by ID or description" 
+            value="{{ request.args.get('search', '') }}" 
+            class="w-full pl-4 py-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 transition duration-300" 
+          />
         </div>
+        <div class="md:col-span-3">
+          <select 
+            name="sort_by" 
+            class="w-full py-4 px-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 transition duration-300"
+          >
+            <option value="">Sort Invoices</option>
+            <option value="recent_first" {% if request.args.get('sort_by') == 'recent_first' %}selected{% endif %}>Recent First</option>
+            <option value="date" {% if request.args.get('sort_by') == 'date' %}selected{% endif %}>Oldest First</option>
+            <option value="highest_amount" {% if request.args.get('sort_by') == 'highest_amount' %}selected{% endif %}>Highest Amount</option>
+            <option value="lowest_amount" {% if request.args.get('sort_by') == 'lowest_amount' %}selected{% endif %}>Lowest Amount</option>
+            <option value="member_id" {% if request.args.get('sort_by') == 'member_id' %}selected{% endif %}>Member ID</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <select 
+            name="filter_status" 
+            class="w-full py-4 px-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 transition duration-300"
+          >
+            <option value="">Payment Status</option>
+            <option value="Paid" {% if request.args.get('filter_status') == 'Paid' %}selected{% endif %}>Paid</option>
+            <option value="Pending" {% if request.args.get('filter_status') == 'Pending' %}selected{% endif %}>Pending</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <button type="submit" class="w-full px-6 py-4 bg-green-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-lg transition duration-300 flex items-center justify-center space-x-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <span>Apply Filters</span>
+          </button>
+        </div>
+      </form>
+    </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Desktop Headers -->
-            <div class="hidden sm:grid sm:grid-cols-8 gap-4 bg-gray-100 p-4 font-semibold text-gray-700">
-                <div>Invoice ID</div>
-                <div>Member ID</div>
-                <div>Amount</div>
-                <div>Date Issued</div>
-                <div>Description</div>
-                <div>Due Date</div>
-                <div>Status</div>
-                <div>Action</div>
+    <!-- Invoice Cards -->
+    {% if invoices %}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      {% for invoice in invoices %}
+      <div class="hover-lift bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div class="p-8">
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <div class="flex items-center space-x-3 mb-2">
+                <span class="text-sm text-gray-500">Invoice</span>
+                <span class="text-sm font-medium text-gray-900">#{{ invoice.invoice_id }}</span>
+              </div>
+              <!-- Updated description: allow text wrapping instead of truncation -->
+              <h3 class="text-xl font-bold text-gray-900 whitespace-normal break-words">{{ invoice.description }}</h3>
             </div>
-
-            {% for invoice in invoices %}
-            <div class="invoice-card border-b border-gray-200 p-4">
-                <!-- Mobile View -->
-                <div class="grid grid-cols-2 gap-2 sm:hidden">
-                    <div>
-                        <div class="font-semibold text-gray-600">Invoice ID</div>
-                        <div>#{{ invoice.invoice_id }}</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Member ID</div>
-                        <div>{{ invoice.member_id }}</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Amount</div>
-                        <div>${{ invoice.amount }}</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Date Issued</div>
-                        <div>{{ invoice.date_issued }}</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Description</div>
-                        <div>{{ invoice.description }}</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Due Date</div>
-                        <div>{{ invoice.due_date }}</div>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Status</div>
-                        {% if invoice.status == 'Paid' %}
-                        <span class="status-badge inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            ✅ Paid
-                        </span>
-                        {% else %}
-                        <span class="status-badge inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                            ❌ Pending
-                        </span>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-600">Action</div>
-                        <form action="{{ url_for('delete_invoice', invoice_id=invoice.invoice_id) }}" method="post" 
-                              onsubmit="return confirm('Are you sure you want to delete this invoice?');">
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-1 px-3 rounded-lg transition duration-300">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Desktop View -->
-                <div class="hidden sm:grid sm:grid-cols-8 gap-4 items-center">
-                    <div>{{ invoice.invoice_id }}</div>
-                    <div>{{ invoice.member_id }}</div>
-                    <div>₹{{ invoice.amount }}</div>
-                    <div>{{ invoice.date_issued }}</div>
-                    <div>{{ invoice.description }}</div>
-                    <div>{{ invoice.due_date }}</div>
-                    <div>
-                        {% if invoice.status == 'Paid' %}
-                        <span class="status-badge inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            ✅ Paid
-                        </span>
-                        {% else %}
-                        <span class="status-badge inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                            ❌ Pending
-                        </span>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <form action="{{ url_for('delete_invoice', invoice_id=invoice.invoice_id) }}" method="post" 
-                              onsubmit="return confirm('Are you sure you want to delete this invoice?');">
-                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-1 px-3 rounded-lg transition duration-300">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                </div>
+            {% if invoice.status == 'Paid' %}
+            <div class="px-4 py-2 bg-green-50 rounded-xl flex items-center">
+              <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+              <span class="text-green-700 font-medium">Paid</span>
             </div>
             {% else %}
-            <div class="p-4 text-center text-gray-500">
-                <p>No invoices found.</p>
+            <div class="px-4 py-2 bg-red-50 rounded-xl flex items-center">
+              <span class="w-2 h-2 bg-red-400 rounded-full mr-2"></span>
+              <span class="text-red-700 font-medium">Pending</span>
             </div>
-            {% endfor %}
+            {% endif %}
+          </div>
+          
+          <div class="grid grid-cols-2 gap-6 mb-6">
+            <div class="bg-gray-50 rounded-xl p-4">
+              <span class="text-sm text-gray-500">Amount</span>
+              <div class="text-lg font-bold text-gray-900">₹{{ invoice.amount }}</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4">
+              <span class="text-sm text-gray-500">Member ID</span>
+              <div class="text-lg font-bold text-gray-900">{{ invoice.member_id }}</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4">
+              <span class="text-sm text-gray-500">Date Issued</span>
+              <div class="text-gray-900">{{ invoice.date_issued }}</div>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4">
+              <span class="text-sm text-gray-500">Due Date</span>
+              <div class="text-gray-900">{{ invoice.due_date }}</div>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-6 border-t border-gray-100">
+            <form action="{{ url_for('delete_invoice', invoice_id=invoice.invoice_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete. Continue?');">
+              <button type="submit" class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition duration-300">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Remove Invoice
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
+      {% endfor %}
     </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">No Invoices Found</h3>
+      <p class="text-gray-500 mb-6">No invoices match your current filters. Try adjusting your search criteria or create a new invoice.</p>
+    </div>
+    {% endif %}
+  </div>
 </body>
 </html>

@@ -301,7 +301,7 @@
           <div class="form-group">
             <label for="member_id">Member ID</label>
             <div class="input-wrapper">
-              <input type="text" class="form-control" id="member_id" name="member_id" required>
+              <input type="text" class="form-control" id="member_id" name="member_id" placeholder="Enter member id" required>
               <i class="input-icon fas fa-fingerprint"></i>
             </div>
           </div>
@@ -309,7 +309,7 @@
           <div class="form-group">
             <label for="amount">Amount</label>
             <div class="input-wrapper">
-              <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+              <input type="number" step="0.01" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
               <i class="input-icon fas fa-rupee-sign"></i>
             </div>
           </div>
@@ -317,7 +317,7 @@
           <div class="form-group full">
             <label for="description">Description</label>
             <div class="input-wrapper">
-              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+              <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter name or address or any description"></textarea>
               <i class="input-icon fas fa-align-left"></i>
             </div>
           </div>
@@ -325,7 +325,7 @@
           <div class="form-group">
             <label for="due_date">Due Date</label>
             <div class="input-wrapper">
-              <input type="date" class="form-control" id="due_date" name="due_date">
+              <input type="date" class="form-control" id="due_date" name="due_date" required>
               <i class="input-icon fas fa-calendar"></i>
             </div>
           </div>
@@ -335,6 +335,7 @@
             <label for="payment_method">Payment Method</label>
             <div class="input-wrapper">
               <select class="form-control" id="payment_method" name="payment_method" required>
+                <option value="">Select Payment Method</option>
                 <option value="card">Credit/Debit Card</option>
                 <option value="cash">Cash</option>
                 <option value="check">Check</option>
@@ -348,9 +349,9 @@
           </div>
 
           <div class="form-group">
-            <label for="receiver_email">Email</label>
+            <label for="receiver_email">Email ID</label>
             <div class="input-wrapper">
-              <input type="email" class="form-control" id="receiver_email" name="receiver_email" required>
+              <input type="email" class="form-control" id="receiver_email" name="receiver_email" placeholder="Please enter mail id" required>
               <i class="input-icon fas fa-at"></i>
             </div>
           </div>
@@ -389,11 +390,11 @@
         
           <a href="{{ url_for('view_invoices') }}" class="btn btn-accent">
             <i class="fas fa-history"></i>
-            History
+            View Invoices
           </a>
           <a href="{{ url_for('past_invoices') }}" class="btn btn-secondary">
             <i class="fas fa-chart-bar"></i>
-            Check Invoices
+            Past Invoices Reports
           </a>
           <button type="submit" class="btn btn-primary">
             <i class="fas fa-paper-plane"></i>
